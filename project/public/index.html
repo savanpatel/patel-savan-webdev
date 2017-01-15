@@ -13,15 +13,12 @@
 
 </head>
 <body>
-    <div class="jumbotron" style="background-image: url('project/images/neu_grayscale.jpg');">
-    <div class="text-center">
-        <div class="row">
+    <div class="container-fluid jumbotron" style="background-image: url('project/images/neu_grayscale.jpg');">
+    <div class="row text-center">
             <div class="col-md-6 alert alert-dismissible alert-danger">
-                <p >CS 3650 Web Development | Northeastern University, Boston</p>
+                <p >CS 5610 Web Development | Northeastern University, Boston</p>
                 <blockquote>Savan Patel (patel.sav@husky.neu.edu) <br/> 001286450</blockquote>
             </div>
-
-        </div>
     </div>
     </div>
 
@@ -105,45 +102,38 @@
 
 
     <hr/>
-    <div>
 
+    <div class="container">
+        <div class="page-header">
+            <h1 id="timeline">Timeline</h1>
+        </div>
+        <ul class="timeline">
+            <li>
+                <div class="timeline-badge success"><i class="fa fa-cog" aria-hidden="true"></i></div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading">
+                        <h4 class="timeline-title">Setup (Assignment 1)</h4>
+                        <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> January 14th 2017</small></p>
+                    </div>
+                    <div class="timeline-body">
+                        <p>Completed setting up AWS, NodeJS and MLab. Finished designing home page.</p>
+                    </div>
+                </div>
+            </li>
+            <li class="timeline-inverted">
+                <div class="timeline-badge warning"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading">
+                        <h4 class="timeline-title">Assignment 2 and Project Definition</h4>
+                    </div>
+                    <div class="timeline-body">
+                        <p>Started working on Project definition.</p>
+                        <p>Started assignment 2.</p>
+                    </div>
+                </div>
+            </li>
+         </ul>
     </div>
-    <div id="demo">
-        <input class="ip" value="146.115.80.8">
-        <button class="send">Go</button>
-        <br><br>
-        <span class="city"></span>,
-        <span class="country"></span>
-    </div>
-    <script>
-        $('.send').on('click', function(){
 
-
-
-            $.getJSON('//freegeoip.net/json/?callback=?', function(data) {
-                console.log(data["city"]);
-            });
-        });
-
-
-    </script>
-
-    <div id='openweathermap-widget'></div>
-    <script type='text/javascript'>
-        window.myWidgetParam = {
-            id: 22,
-            cityid: 524901,
-            appid: '',
-            containerid: 'openweathermap-widget',
-        };
-        (function() {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.async = true;
-            script.src = 'http://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(script, s);
-        })();
-    </script>
 </body>
 </html>
