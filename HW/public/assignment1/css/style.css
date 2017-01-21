@@ -5,3 +5,30 @@ input.form-control {
 body {
     padding-top: 36px;
 }
+
+.pull-right-margin-1em
+{
+    margin-right: 1em;
+}
+
+
+.pull-left-margin-1em
+{
+    margin-left: 1em;
+}
+
+.container-if-fixed-header
+{
+    margin-top:50px;
+}
+.container-if-fixed-footer
+{
+    margin-bottom:80px;
+}
+
+
+
+.website-list-group-item
+{
+    color:#2980b9;
+}

@@ -2,32 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Profile</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
     <link href="css/style.css" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
 </head>
 <body>
 
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-        <div class="navbar-header">
+        <div class="navbar-header btn-block">
             <a class="navbar-brand" href="#">
-                Fixed Top
+                Dashboard
             </a>
-            <p class="navbar-text pull-right">
-                <a href="#" class="navbar-link">
-          <span class="glyphicon glyphicon-plus">
-          </span>
-                </a>
-            </p>
+            <p class="navbar-text pull-right"><a href="#" class="navbar-link"><i class="fa fa-bars"></i></a></p>
         </div>
     </div>
 </nav>
 
 
-    <div class="container">
-        <h1>Profile</h1>
-
+    <div class="container-fluid container-if-fixed-header container-if-fixed-footer">
+        <div class="form-group">
+            <h3>Profile<i class="fa fa-user pull-right" ></i></h3>
+        </div>
         <form>
             <div class="form-group">
                 <label for="username">Username</label>
@@ -51,34 +57,18 @@
            href="website-list.html">Websites</a>
         <a class="btn btn-danger  btn-block"
            href="login.html">Logout</a>
+        <footer class="container-if-fixed-header fixed-bottom text-center text-muted"><i class="fa fa-superpowers" aria-hidden="true"></i>Powered by ABC</footer>
     </div>
 
-<nav class="navbar navbar-default navbar-fixed-bottom">
-    <div class="container">
-        <div class="row navbar-text">
-            <div class="col-xs-3 text-center">
-                <a href="#">
-                    <span class="glyphicon glyphicon-ok"></span>
-                </a>
+        <nav class="navbar navbar-default navbar-fixed-bottom container-fluid">
+            <div class="navbar-text pull-right row">
+                <div class="text-center col-md-12">
+                    <a href="#">
+                        <span class="fa fa-user fa-2x"></span>
+                    </a>
+                </div>
             </div>
-            <div class="col-xs-3 text-center">
-                <a href="#">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </a>
-            </div>
-            <div class="col-xs-3 text-center">
-                <a href="#">
-                    <span class="glyphicon glyphicon-star"></span>
-                </a>
-            </div>
-            <div class="col-xs-3 text-center">
-                <a href="#">
-                    <span class="glyphicon glyphicon-heart"></span>
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>
+        </nav>
 
 </body>
 </html>
