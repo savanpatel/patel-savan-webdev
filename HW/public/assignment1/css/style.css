@@ -32,3 +32,8 @@ body {
 {
     color:#2980b9;
 }
+
+.no-decoration:hover
+{
+    text-decoration: none;
+}
