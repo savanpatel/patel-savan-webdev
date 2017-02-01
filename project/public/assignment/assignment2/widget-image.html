@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Widget Edit</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <link href="css/style.css" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="navbar-header btn-block">
+                    <p class="navbar-text pull-left"><a href="widget-list.html" class="navbar-link"><i class="fa fa-chevron-left"></i></a></p>
+                    <a class="navbar-brand" href="#">Widget Edit</a>
+                    <p class="navbar-text pull-right"><a href="website-list.html" class="navbar-link"><i class="fa fa-check"></i></a></p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid container-if-fixed-header container-if-fixed-footer">
+        <form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Name">
+            </div>
+            <div class="form-group">
+                <label for="headingtext">Text</label>
+                <input type="text" class="form-control" id="headingtext" placeholder="Describe Image">
+            </div>
+
+            <div class="form-group">
+                <label for="width">Width</label>
+                <input type="text" class="form-control" id="width" placeholder="200px">
+            </div>
+
+            <p class="text-muted">Upload Image or provide URL</p>
+            <div class="form-group">
+                <label for="urltext">URL</label>
+                <input type="text" class="form-control" id="urltext" value="http://www.images.google.com/23rTGf4oF">
+            </div>
+            <div class="form-group">
+                <label for="fileupload">Upload</label>
+                <input type="file" class="form-control btn-block btn-file" id="fileupload">
+            </div>
+
+            <div class="form-group">
+                <a class="btn btn-success btn-block"
+                   href="#">Upload Image</a>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-danger btn-block"
+                   href="widget-list.html">Delete</a>
+            </div>
+        </form>
+
+
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom container-fluid">
+        <div class="navbar-text pull-right row">
+            <div class="text-center col-md-12">
+                <a href="profile.html">
+                    <span class="fa fa-user fa-2x"></span>
+                </a>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>

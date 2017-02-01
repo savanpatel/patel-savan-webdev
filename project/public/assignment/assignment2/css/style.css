@@ -1,0 +1,64 @@
+input.form-control {
+    margin-bottom: 5px;
+}
+
+body {
+    padding-top: 36px;
+}
+
+.pull-right-margin-1em
+{
+    margin-right: 1em;
+}
+
+
+.pull-left-margin-1em
+{
+    margin-left: 1em;
+}
+
+.container-if-fixed-header
+{
+    margin-top:50px;
+}
+.container-if-fixed-footer
+{
+    margin-bottom:80px;
+}
+
+
+
+.website-list-group-item
+{
+    color:#2980b9;
+}
+
+.no-decoration:hover
+{
+    text-decoration: none;
+}
+
+.widget-text-color
+{
+    color:#2c3e50;
+}
+
+.control
+{
+    position: absolute;
+    top:0px;
+    right: 10px;
+    margin-right: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    background-color: #ffffff;
+    opacity: 0.85;
+    z-index:  1;
+}
+
+
+.meta-information
+{
+    margin-left: 200px;
+    color: rgba(79, 96, 103, 0.79);
+}
