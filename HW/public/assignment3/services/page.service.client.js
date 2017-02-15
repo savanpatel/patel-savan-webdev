@@ -7,7 +7,11 @@
         var pages = [
                 { "_id": "321", "name": "Post 1", "websiteId": "456", "description": "Lorem" },
                 { "_id": "432", "name": "Post 2", "websiteId": "456", "description": "Lorem" },
-                { "_id": "543", "name": "Post 3", "websiteId": "456", "description": "Lorem" }
+                { "_id": "543", "name": "Post 3", "websiteId": "456", "description": "Lorem" },
+                { "_id": "322", "name": "About", "websiteId": "789", "description": "Lorem" },
+                { "_id": "323", "name": "Careers", "websiteId": "789", "description": "Lorem" },
+                { "_id": "324", "name": "Work life balance", "websiteId": "790", "description": "Lorem" },
+                { "_id": "325", "name": "Time management", "websiteId": "790", "description": "Lorem" }
             ];
 
         var api = {
@@ -35,7 +39,7 @@
 
             pages.push(newPage);
 
-            return true;
+            return angular.copy(newPage);
         }
 
 
@@ -48,9 +52,9 @@
 
             var userPages = [];
             for(var p in pages) {
-
-                if(pages[p].websiteId === websiteId) {
-                    userPages.push(pages[p]);
+                console.log(p.websiteId);
+                if(pages[p].websiteId == websiteId) {
+                    userPages.push(angular.copy(pages[p]));
                 }
             }
             return userPages;
@@ -64,14 +68,13 @@
          */
         function findPageById(pageId)  {
 
-            var userPages = [];
             for(var p in pages) {
 
-                if(pages[p]._id === pageId) {
-                    userPages.push(pages[p]);
+                if(pages[p]._id == pageId) {
+                    return angular.copy(pages[p]);
                 }
             }
-            return userPages;
+            return null;
         }
 
 
@@ -82,7 +85,7 @@
         function updatePage(pageId, page){
             for(var p in pages) {
 
-                if(pages[p]._id === pageId) {
+                if(pages[p]._id == pageId) {
                     pages[p].name= page.name;
                     pages[p].description = page.description;
                     pages[p].websiteId = page.websiteId;
@@ -101,7 +104,7 @@
         function deletePage(pageId) {
             for(var p in pages) {
 
-                if(pages[p]._id === pageId) {
+                if(pages[p]._id == pageId) {
 
                     pages.splice(p, 1);
                     return true;
