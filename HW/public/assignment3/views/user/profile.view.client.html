@@ -1,10 +1,10 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header btn-block">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="#/user/{{model.userId}}">
                 Dashboard
             </a>
-            <p class="navbar-text pull-right"><a href="#/user/1234" class="navbar-link"><i class="fa fa-bars"></i></a></p>
+            <p class="navbar-text pull-right"><a href="#/user/{{model.userId}}" class="navbar-link"><i class="fa fa-bars"></i></a></p>
         </div>
     </div>
 </nav>
@@ -17,34 +17,33 @@
     <form>
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" placeholder="Username">
+            <input type="text" ng-model="model.user.username" class="form-control" id="username" placeholder="Username">
         </div>
         <div class="form-group">
             <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="alice@wonderland.com">
+            <input type="email" ng-model="model.user.email" class="form-control" id="email" placeholder="alice@wonderland.com">
         </div>
         <div class="form-group">
             <label for="first-name">First Name</label>
-            <input type="text" class="form-control" id="first-name" placeholder="Alice">
+            <input type="text" ng-model="model.user.firstName" class="form-control" id="first-name" placeholder="Alice">
         </div>
         <div class="form-group">
             <label for="last-name">Last Name</label>
-            <input type="text" class="form-control" id="last-name" placeholder="Wonderland">
+            <input type="text" ng-model="model.user.lastName" class="form-control" id="last-name" placeholder="Wonderland">
         </div>
     </form>
 
     <a class="btn btn-primary btn-block"
-       href="#/user/1234/website">Websites</a>
-    <a class="btn btn-danger  btn-block"
-       href="#/login">Logout</a>
+       href="#/user/{{model.userId}}/website">Websites</a>
+    <a class="btn btn-danger  btn-block" href="#/login">Logout</a>
     <footer class="container-if-fixed-header fixed-bottom text-center text-muted"><i class="fa fa-superpowers" aria-hidden="true"></i>Powered by ABC</footer>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom container-fluid">
     <div class="navbar-text pull-right row">
         <div class="text-center col-md-12">
-            <a href="#/user/1234">
-                <span class="fa fa-user fa-2x"></span>
+            <a>
+                <span ng-click="model.updateUser(model.user)" class="fa fa-user fa-2x"></span>
             </a>
         </div>
     </div>

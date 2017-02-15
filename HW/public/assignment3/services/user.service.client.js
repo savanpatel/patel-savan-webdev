@@ -3,15 +3,19 @@
         .module("WebAppMaker")
         .factory("UserService", UserService);
 
+    var users = [
+        {_id: "123", username: "alice", password: "alice", firstName: "Alice", lastName: "Wonder", email:"alice@wonderland.com"},
+        {_id: "234", username: "bob", password: "bob", firstName: "Bob", lastName: "Marley", email:"bob@marley.com"},
+        {_id: "345", username: "charly", password: "charly", firstName: "Charly", lastName: "Garcia", email: "charley@gmail.com"},
+        {_id: "456", username: "jannunzi", password: "jannunzi", firstName: "Jose", lastName: "Annunzi", email:"jannunzi@gmail.com"}
+    ];
+
+
     function UserService() {
-        var users = [
-            {_id: "123", username: "alice", password: "alice", firstName: "Alice", lastName: "Wonder"},
-            {_id: "234", username: "bob", password: "bob", firstName: "Bob", lastName: "Marley"},
-            {_id: "345", username: "charly", password: "charly", firstName: "Charly", lastName: "Garcia"},
-            {_id: "456", username: "jannunzi", password: "jannunzi", firstName: "Jose", lastName: "Annunzi"}
-        ];
+
 
         var api = {
+            "users":users,
             "createUser": createUser,
             "findUserById": findUserById,
             "findUserByUsername": findUserByUsername,
@@ -30,14 +34,15 @@
 
         function createUser(user)
         {
-            var newUser = {_id:user.id,
+            var newUser = {_id:users.length + 1,
                            username:user.username,
                            password: user.password,
                            firstName:user.firstName,
-                           lastName:user.lastName};
-            users.push(newUser);
+                           lastName:user.lastName,
+                           email:user.email};
+            users.push(angular.copy(newUser));
 
-            return true;
+            return newUser;
         }
 
 
@@ -48,13 +53,11 @@
          */
         function findUserById(id) {
             for(var u in users) {
-
-                if(users[u]._id === id) {
-                    return users[u];
+                if(users[u]._id == id) {
+                    return angular.copy(users[u]);
                 }
-
-                return null;
             }
+            return null;
         }
 
 
@@ -65,12 +68,12 @@
          */
         function findUserByUsername(username){
             for(var u in users) {
-                if(users[u].username === username) {
-                    return users[u];
+                if(users[u].username == username) {
+                    return angular.copy(users[u]);
                 }
-
-                return null;
             }
+
+            return null;
         }
 
 
@@ -80,12 +83,12 @@
          */
         function findUserByCredentials(username, password){
             for(var u in users) {
-                if(users[u].username === username && users[u].password === password) {
-                    return users[u];
+                if(users[u].username == username && users[u].password == password) {
+                    return angular.copy(users[u]);
                 }
 
-                return null;
             }
+            return null;
         }
 
 
@@ -94,13 +97,14 @@
          * Returns true on success, false on failure.
          */
         function updateUser(userId, user) {
-            for (var u in users) {
-                if (users[u]._id === userId) {
 
+            for (var u in users) {
+                if (users[u]._id == userId) {
                     users[u].username = user.username;
                     users[u].firstName = user.firstName;
                     users[u].lastName = user.lastName;
                     users[u].password = user.password;
+                    users[u].email = user.email;
 
                     return true;
                 }
@@ -121,7 +125,7 @@
 
             for(var u in users)
             {
-                if(users[u]._id === userId) {
+                if(users[u]._id == userId) {
                     users.splice(u,1);
                     return true;
                 }

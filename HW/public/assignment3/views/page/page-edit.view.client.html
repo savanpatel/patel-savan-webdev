@@ -53,12 +53,12 @@
         <div class="col-md-8">
             <div class="form-group">
                 <label for="new-page-name">Name</label>
-                <input type="text" class="form-control" id="new-page-name" value="Home">
+                <input type="text" ng-model="model.page.name" class="form-control" id="new-page-name" value="Home">
             </div>
             <br/>
             <div class="form-group">
                 <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" value="Home Sweet Home.">
+                <input type="text" ng-model="model.page.title" class="form-control" id="title" value="Home Sweet Home.">
             </div>
             <div class="form-group">
                 <a href="#/user/5643/website/1234/page" class="btn btn-danger btn-block">Delete</a>

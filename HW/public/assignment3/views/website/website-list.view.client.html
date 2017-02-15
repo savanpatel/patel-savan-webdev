@@ -1,9 +1,9 @@
  <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header btn-block">
-                <p class="navbar-text pull-left pull-left-margin-1em"><a href="#/user/1234" class="navbar-link"><i class="fa fa-chevron-left"></i></a></p>
+                <p class="navbar-text pull-left pull-left-margin-1em"><a href="#/user/{{model.userId}}" class="navbar-link"><i class="fa fa-chevron-left"></i></a></p>
                 <a class="navbar-brand" href="#/user/1234/website">Websites</a>
-                <p class="navbar-text pull-right"><a href="#/user/1234/website/new" class="navbar-link"><i class="fa fa-plus"></i></a></p>
+                <p class="navbar-text pull-right"><a href="#/user/{{model.userId}}/website/new" class="navbar-link"><i class="fa fa-plus"></i></a></p>
             </div>
         </div>
     </nav>
@@ -11,26 +11,9 @@
     <div class="container-fluid container-if-fixed-header container-if-fixed-footer">
 
         <div class="row website-list-group-item">
-            <div class="col-md-12 list-group-item container">
-                <p class="pull-left"><a href="#/user/1234/website/5478/page" class="no-decoration"><strong>Blog App</strong></a></p>
-                <a href="#/user/1234/website/5434"><i class="fa fa-cog pull-right"></i></a>
-            </div>
-
-
-            <div class="col-md-12 list-group-item container">
-                <p class="pull-left"><a href="#/user/1234/website/5478/page" class="no-decoration"><strong>Food recipies</strong></a></p>
-                <a href="#/user/1234/website/5434"><i class="fa fa-cog pull-right"></i></a>
-            </div>
-
-
-            <div class="col-md-12 list-group-item container">
-                <p class="pull-left"><a href="#/user/1234/website/5478/page" class="no-decoration"><strong>Todo App</strong></a></p>
-                <a href="#/user/1234/website/5434"><i class="fa fa-cog pull-right"></i></a>
-            </div>
-
-            <div class="col-md-12 list-group-item container">
-                <p class="pull-left"><a href="#/user/1234/website/5478/page" class="no-decoration"><strong>Travel Log</strong></a></p>
-                <a href="#/user/1234/website/5434"><i class="fa fa-cog pull-right"></i></a>
+            <div class="col-md-12 list-group-item container" ng-repeat="w in model.websitelist">
+                <p class="pull-left"><a href="#/user/{{model.userId}}/website/{{w._id}}/page" class="no-decoration"><strong>{{w.name}}</strong></a></p>
+                <a href="#/user/{{model.userId}}/website/{{w._id}}"><i class="fa fa-cog pull-right"></i></a>
             </div>
 
         </div>
@@ -40,7 +23,7 @@
     <nav class="navbar navbar-default navbar-fixed-bottom container-fluid">
         <div class="navbar-text pull-right row">
             <div class="text-center col-md-12">
-                <a href="#/user/1234">
+                <a href="#/user/{{model.userId}}">
                     <span class="fa fa-user fa-2x"></span>
                 </a>
             </div>

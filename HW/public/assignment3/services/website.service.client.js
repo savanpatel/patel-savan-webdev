@@ -10,7 +10,8 @@
             { "_id": "456", "name": "Gizmodo",     "developerId": "456", "description": "Lorem" },
             { "_id": "567", "name": "Tic Tac Toe", "developerId": "123", "description": "Lorem" },
             { "_id": "678", "name": "Checkers",    "developerId": "123", "description": "Lorem" },
-            { "_id": "789", "name": "Chess",       "developerId": "234", "description": "Lorem" }
+            { "_id": "789", "name": "Chess",       "developerId": "234", "description": "Lorem" },
+            { "_id": "790", "name": "Self Help",   "developerId": "234", "description": "Lorem" }
         ];
 
         var api = {
@@ -38,7 +39,7 @@
 
             websites.push(newWebsite);
 
-            return true;
+            return newWebsite;
         }
 
 
@@ -52,7 +53,7 @@
             var userWebSites = [];
             for(var w in websites) {
 
-                if(websites[w].developerId === userId) {
+                if(websites[w].developerId == userId) {
                     userWebSites.push(websites[w]);
                 }
             }
@@ -70,12 +71,12 @@
 
             for(var w in websites) {
 
-                if(websites[w]._id === websiteId) {
-                    return websites[w];
+                if(websites[w]._id == websiteId) {
+                    return angular.copy(websites[w]);
                 }
-
-                return null;
             }
+
+            return null;
         }
 
 
@@ -86,7 +87,7 @@
         function updateWebsite(websiteId, website){
             for(var w in websites) {
 
-                if(websites[w]._id === websiteId) {
+                if(websites[w]._id == websiteId) {
                     websites[w].description = website.description;
                     websites[w].name = website.name;
 
@@ -103,7 +104,7 @@
         function deleteWebsite(websiteId) {
             for(var w in websites) {
 
-                if(websites[w]._id === websiteId) {
+                if(websites[w]._id == websiteId) {
 
                     websites.splice(w, 1);
                     return true;

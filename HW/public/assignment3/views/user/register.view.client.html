@@ -7,26 +7,40 @@
             </div>
         </div>
     </nav>
-    <div class="container container-if-fixed-header">
-
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" placeholder="Username">
+    <div class="container container-if-fixed-header container-if-fixed-footer">
+        <div ng-show="model.error" class="alert alert-danger" role="alert">
+            {{model.error}}
         </div>
         <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" ng-model="user.username" class="form-control" id="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input type="text" ng-model="user.firstName" class="form-control" id="firstname" placeholder="First Name">
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="text" ng-model="user.lastName" class="form-control" id="lastname" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" ng-model="user.email" class="form-control" id="email" placeholder="Email">
+        </div>
+
+        <div class="form-group">
             <label for="password">Password</label>
-            <input type="text" class="form-control" id="password" placeholder="password">
+            <input type="password" ng-model="user.password" class="form-control" id="password" placeholder="password">
         </div>
         <div class="form-group">
             <label for="repassword">Retype Password</label>
-            <input type="text" class="form-control" id="repassword" placeholder="retype password">
+            <input type="password" ng-model="user.repassword" class="form-control" id="repassword" placeholder="retype password">
         </div>
 
         <br/>
         <a class="btn btn-primary btn-block btn-success"
-           href="#/user/123">Register</a>
-        <a class="btn btn-danger  btn-block"
-           href="#/login">Cancel</a>
+           ng-click="model.register(user)">Register</a>
+        <a class="btn btn-danger btn-block" href="#/login">Cancel</a>
+
     </div>
 
-    <footer class="navbar navbar-fixed-bottom text-center text-muted"><i class="fa fa-superpowers" aria-hidden="true"></i>Powered by ABC</footer>
