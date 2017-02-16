@@ -65,18 +65,8 @@
                 controller: "NewWidgetController",
                 controllerAs: "model"
             })
-            .when("/user/:uid/website/:wid/page/:pid/widget/:wid", {
-                templateUrl: "views/widget/widget-heading.view.client.html",
-                controller: "EditWidgetController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page/:pid/widget/:wid/image", {
-                templateUrl: "views/widget/widget-image.view.client.html",
-                controller: "EditWidgetController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page/:pid/widget/:wid/youtube", {
-                templateUrl: "views/widget/widget-youtube.view.client.html",
+            .when("/user/:uid/website/:wid/page/:pid/widget/:widgetid", {
+                templateUrl: "views/widget/widget-edit.view.client.html",
                 controller: "EditWidgetController",
                 controllerAs: "model"
             })

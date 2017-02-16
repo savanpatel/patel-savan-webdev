@@ -9,6 +9,7 @@
             var vm = this;
 
             vm.login = login;
+            vm.error = null;
 
 
             /*
@@ -16,6 +17,11 @@
              */
             function login(user) {
 
+                 if(null == user)
+                 {
+                     vm.error = "Invalid Credentials";
+                     return;
+                 }
                  console.log(user);
                  user = UserService.findUserByCredentials(user.username, user.password);
 
@@ -23,7 +29,7 @@
                      $location.url("/user/" + user._id);
                  }
                  else {
-                     alert("Invalid Credentials");
+                     vm.error = "Invalid Credentials";
                  }
             }
 

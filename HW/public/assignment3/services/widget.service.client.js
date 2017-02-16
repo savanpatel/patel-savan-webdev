@@ -1,20 +1,28 @@
 (function() {
     angular
         .module("WebAppMaker")
-        .factory("WidgetService", UserService);
+        .factory("WidgetService", WidgetService);
 
-    function UserService() {
+
+
+    function WidgetService() {
+
         var widgets = [
-            { "_id": "123", "widgetType": "HEADER", "pageId": "321", "size": 2, "text": "GIZMODO"},
-            { "_id": "234", "widgetType": "HEADER", "pageId": "321", "size": 4, "text": "Lorem ipsum"},
-            { "_id": "345", "widgetType": "IMAGE", "pageId": "321", "width": "100%", "url": "http://lorempixel.com/400/200/"},
+            { "_id": "123", "widgetType": "HEADER", "pageId": "321", "size": 2, "text": "GIZMODO", "name":"Heading1"},
+            { "_id": "234", "widgetType": "HEADER", "pageId": "321", "size": 4, "text": "Lorem ipsum" , "name":"Heading11"},
+            { "_id": "345", "widgetType": "IMAGE", "name":"name text","text":"image text",  "pageId": "321", "width": "100%", "url": "http://lorempixel.com/400/200/"},
             { "_id": "456", "widgetType": "HTML", "pageId": "321", "text": "<p>Lorem ipsum</p>"},
-            { "_id": "567", "widgetType": "HEADER", "pageId": "321", "size": 4, "text": "Lorem ipsum"},
+            { "_id": "567", "widgetType": "HEADER", "pageId": "321", "size": 4, "text": "Lorem ipsum", "name":"Heading2"},
             { "_id": "678", "widgetType": "YOUTUBE", "pageId": "321", "width": "100%", "url": "https://youtu.be/AM2Ivdi9c4E" },
-            { "_id": "789", "widgetType": "HTML", "pageId": "321", "text": "<p>Lorem ipsum</p>"}
+            { "_id": "789", "widgetType": "HTML", "pageId": "321", "text": "<p>Lorem ipsum</p>"},
+            { "_id": "1234", "widgetType": "HEADER", "pageId": "322", "size": 2, "text": "GIZMODO", "name":"Heading13e"},
+            { "_id": "2344", "widgetType": "HEADER", "pageId": "322", "size": 4, "text": "Heade of size 4" , "name":"Heading54"},
+            { "_id": "3453", "widgetType": "IMAGE", "name":"name text", "text":"image text", "pageId": "322", "width": "100%", "url": "http://lorempixel.com/400/200/"},
+            { "_id": "4564", "widgetType": "HTML", "pageId": "322", "text": "<p>Some html</p>"},
+            { "_id": "5673", "widgetType": "HEADER", "pageId": "322", "size": 4, "text": "Another header of size 4", "name":"Heading675"},
+            { "_id": "6785", "widgetType": "YOUTUBE", "pageId": "322", "width": "100%", "url": "https://youtu.be/AM2Ivdi9c4E" },
+            { "_id": "7895", "widgetType": "HTML", "pageId": "322", "text": "<p>Lorem ipsum</p>"}
         ];
-
-
         var api = {
             "createWidget": createWidget,
             "findWidgetsByPageId": findWidgetsByPageId,
@@ -59,7 +67,7 @@
 
             widgets.push(newWidget);
 
-            return true;
+            return newWidget;
         }
 
 
@@ -73,8 +81,8 @@
             var widgetList = [];
             for(var w in widgets) {
 
-                if(widgets[w].pageId === pageId) {
-                    widgetList.push(widgets[w]);
+                if(widgets[w].pageId == pageId) {
+                    widgetList.push(angular.copy(widgets[w]));
                 }
             }
             return widgetList;
@@ -90,7 +98,7 @@
 
            for(var w in widgets) {
 
-                if(widgets[w]._id === widgetId) {
+                if(widgets[w]._id == widgetId) {
                     return widgets[w];
                 }
             }
@@ -106,11 +114,12 @@
 
             for(var w in widgets) {
 
-                 if(widgets[w]._id === widgetId) {
+                 if(widgets[w]._id == widgetId) {
 
                     switch (widget.widgetType) {
 
-                        case "HEADER": widgets[w].size = widget.size;
+                        case "HEADER": widgets[w].name = widget.name;
+                                       widgets[w].size = widget.size;
                                        widgets[w].text = widget.text;
                                        break;
 
@@ -135,16 +144,14 @@
         }
 
 
-
-
         /*
          * deletes page from list based on pageId.
          */
         function deleteWidget(widgetId) {
             for(var w in widgets) {
 
-                if(widgets[w]._id === widgetId) {
-                    widgets.splice(p, 1);
+                if(widgets[w]._id == widgetId) {
+                    widgets.splice(w, 1);
                     return true;
                 }
 

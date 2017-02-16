@@ -5,6 +5,9 @@
         <div class="row">
             <div class="col-sm-12 text-center"><h1>Login</h1></div>
         </div>
+        <div ng-show="model.error" class="alert alert-danger" role="alert">
+         {{model.error}}
+        </div>
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" ng-model="user.username" class="form-control" id="username" placeholder="Username">
@@ -17,5 +20,3 @@
         <a class="btn btn-primary btn-block btn-success" ng-click="model.login(user)">Login</a>
         <a class="btn btn-success btn-block btn-danger" href="#/register">Register</a>
     </div>
-
-    <footer class="navbar navbar-fixed-bottom text-center text-muted"><i class="fa fa-superpowers" aria-hidden="true"></i>Powered by ABC</footer>

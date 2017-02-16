@@ -1,0 +1,34 @@
+<form>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" ng-model="model.w.name" class="form-control" id="name" placeholder="Name">
+    </div>
+    <div class="form-group">
+        <label for="headingtext">Text</label>
+        <input type="text" ng-model="model.w.text" class="form-control" id="headingtext" placeholder="Describe Image">
+    </div>
+
+    <div class="form-group">
+        <label for="width">Width</label>
+        <input type="text" ng-model="model.w.width" class="form-control" id="width" placeholder="200px">
+    </div>
+
+    <p class="text-muted">Upload Image or provide URL</p>
+    <div class="form-group">
+        <label for="urltext">URL</label>
+        <input type="text" ng-model="model.w.url" class="form-control" id="urltext" value="http://www.images.google.com/23rTGf4oF">
+    </div>
+    <div class="form-group">
+        <label for="fileupload">Upload</label>
+        <input type="file" class="form-control btn-block btn-file" id="fileupload">
+    </div>
+
+    <div class="form-group">
+        <a class="btn btn-success btn-block"
+           href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{model.widgetId}}/image">Upload Image</a>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-danger btn-block"
+           ng-click="model.deleteWidget()">Delete</a>
+    </div>
+</form>
