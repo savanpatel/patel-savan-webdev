@@ -1,0 +1,47 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="navbar-header btn-block">
+                    <p class="navbar-text pull-left"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget" class="navbar-link"><i class="fa fa-chevron-left"></i></a></p>
+                    <a class="navbar-brand" href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{model.widgetId}}">Widget Edit</a>
+                    <p class="navbar-text pull-right"><a ng-click="model.updateWidget()" class="navbar-link"><i class="fa fa-check"></i></a></p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid container-if-fixed-header container-if-fixed-footer">
+
+        <div ng-switch="model.w.widgetType">
+            <div ng-switch-when="HEADER">
+                <ng-include src="'views/widget/widget-HEADING-edit.view.client.html'">
+            </div>
+
+            <div ng-switch-when="IMAGE">
+                <ng-include src="'views/widget/widget-IMAGE-edit.view.client.html'">
+            </div>
+
+            <div ng-switch-when="YOUTUBE">
+                <ng-include src="'views/widget/widget-YOUTUBE-edit.view.client.html'">
+            </div>
+
+            <div ng-switch-when="HTML">
+                <ng-include src="'views/widget/widget-HTML-edit.view.client.html'">
+            </div>
+
+            <div ng-switch-default="">
+                <ng-include src="'views/widget/widget-HEADING-edit.view.client.html'">
+            </div>
+
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom container-fluid">
+        <div class="navbar-text pull-right row">
+            <div class="text-center col-md-12">
+                <a href="#/user/{{model.userId}}">
+                    <span class="fa fa-user fa-2x"></span>
+                </a>
+            </div>
+        </div>
+    </nav>
