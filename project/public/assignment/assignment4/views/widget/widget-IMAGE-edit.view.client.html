@@ -1,0 +1,39 @@
+<form action="/api/upload" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" ng-model="model.w.name" class="form-control" id="name" placeholder="Name">
+    </div>
+    <div class="form-group">
+        <label for="headingtext">Text</label>
+        <input type="text" ng-model="model.w.text" class="form-control" id="headingtext" placeholder="Describe Image">
+    </div>
+
+    <div class="form-group">
+        <label for="width">Width</label>
+        <input type="text" ng-model="model.w.width" class="form-control" id="width" placeholder="200px">
+    </div>
+
+    <input  name="widgetId" value="{{model.w._id}}"   style="display: none"/>
+    <input  name="userId" value="{{model.userId}}"   style="display: none"/>
+    <input  name="websiteId" value="{{model.websiteId}}"   style="display: none"/>
+    <input  name="pageId" value="{{model.pageId}}"   style="display: none"/>
+
+    <p class="text-muted">Upload Image or provide URL</p>
+    <div class="form-group">
+        <label for="urltext">URL</label>
+        <input type="text" ng-model="model.w.url" class="form-control" id="urltext" value="http://www.images.google.com/23rTGf4oF">
+    </div>
+    <div class="form-group">
+        <label for="fileupload">Upload</label>
+        <input type="file" name="myFile" class="form-control btn-block btn-file" id="fileupload">
+    </div>
+
+    <div class="form-group">
+        <button type="submit"   class="btn btn-block btn-primary">Upload Image</button>
+
+    </div>
+    <div class="form-group">
+        <a class="btn btn-danger btn-block"
+           ng-click="model.deleteWidget()">Delete</a>
+    </div>
+</form>

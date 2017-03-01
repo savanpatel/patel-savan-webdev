@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="WebAppMaker">
+<head>
+    <meta charset="UTF-8">
+    <title>Quick Access</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Compiled and minified CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/jquery.ui.touch-punch.js"></script>
+
+    <script src="js/angular.js"></script>
+    <script src="js/angular-route.js"></script>
+    <script src="js/angular-sanitize.js"></script>
+
+    <script src="app.js"></script>
+    <script src="config.js"></script>
+
+    <script src="services/page.service.client.js"></script>
+    <script src="services/user.service.client.js"></script>
+    <script src="services/website.service.client.js"></script>
+    <script src="services/widget.service.client.js"></script>
+
+    <script src="views/user/login.controller.client.js"></script>
+    <script src="views/user/register.controller.client.js"></script>
+    <script src="views/user/profile.controller.client.js"></script>
+
+    <script src="views/page/EditPage.controller.client.js"></script>
+    <script src="views/page/NewPage.controller.client.js"></script>
+    <script src="views/page/PageList.controller.client.js"></script>
+
+    <script src="views/website/EditWebsite.controller.client.js"></script>
+    <script src="views/website/NewWebsite.controller.client.js"></script>
+    <script src="views/website/WebsiteList.controller.client.js"></script>
+
+    <script src="views/widget/EditWidget.controller.client.js"></script>
+    <script src="views/widget/NewWidget.controller.client.js"></script>
+    <script src="views/widget/WidgetList.controller.client.js"></script>
+
+    <script src="directives/wbdv-sortable.js"></script>
+
+    <link href="css/style.css" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+</head>
+<body >
+    <div ng-view>
+
+    </div>
+</body>
+</html>
