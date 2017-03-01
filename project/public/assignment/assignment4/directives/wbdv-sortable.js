@@ -25,7 +25,6 @@
 
             function sortEnd(event, ui) {
                 endIndex = ui.item.index();
-                console.log(widgetId);
                 var promise = WidgetService.reorderWidget(startIndex, endIndex, scope.model.pageId, widgetId);
 
                 promise.success(onWidgetReorderSuccess);

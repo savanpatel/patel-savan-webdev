@@ -151,8 +151,6 @@ module.exports = function (app) {
     
     function uploadImage(req, res) {
 
-        console.log("In file upload");
-        console.log(req.body);
         var widgetId      = req.body.widgetId;
         var width         = req.body.width;
         var myFile        = req.file;
@@ -167,7 +165,7 @@ module.exports = function (app) {
         var widget = findWidgetByIdHelper(widgetId);
         widget.url = "localhost:3000/uploads/" + filename;
         widget.isUploaded = true;
-        res.redirect("/assignment4/#/user/" + req.body.userId + "/website/" + req.body.websiteId + "/page/" + req.body.pageId + "/widget");
+        res.redirect("/assignment/assignment4/#/user/" + req.body.userId + "/website/" + req.body.websiteId + "/page/" + req.body.pageId + "/widget");
 
 
 
