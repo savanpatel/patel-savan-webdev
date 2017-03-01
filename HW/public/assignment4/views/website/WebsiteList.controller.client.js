@@ -11,12 +11,22 @@
             vm.userId = $routeParams["uid"];
             function init() {
 
-                vm.websitelist = WebsiteService.findWebsitesByUser(vm.userId);
+                var promise = WebsiteService.findWebsitesByUser(vm.userId);
+
+                promise.success(onFindWebsiteSuccess);
+                promise.error(onFindWebsiteError);
             }
 
             init();
 
+
+            function onFindWebsiteSuccess(response) {
+                vm.websitelist = response;
+            }
+
+
+            function onFindWebsiteError(response) {
+                vm.websitelist = [];
+            }
         }
-
-
 })();

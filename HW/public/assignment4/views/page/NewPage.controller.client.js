@@ -14,10 +14,6 @@
             vm.createPage = createPage;
 
             function init() {
-
-                console.log(vm.websiteId);
-                vm.pagelist = PageService.findPageByWebsiteId(vm.websiteId);
-                console.log(vm.pagelist);
             }
 
             init();
@@ -25,13 +21,21 @@
 
             function createPage(page) {
                 if(null != page && null != page.name && null != page.description){
-                    var newPage = PageService.createPage(vm.websiteId, page);
-                    vm.page = null;
-                    vm.pagelist.push(newPage);
+                    var promise = PageService.createPage(vm.websiteId, page);
+                    promise.success(onCreatePageSuccess);
+                    promise.error(onCreatePageError);
                 }
+            }
+
+
+            // promise functions.
+
+            function onCreatePageSuccess(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
+            }
+
+            function onCreatePageError(response) {
                 $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
             }
         }
-
-
 })();

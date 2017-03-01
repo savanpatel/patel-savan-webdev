@@ -15,30 +15,72 @@
                 vm.userId = $routeParams["uid"];
                 vm.websiteId = $routeParams["wid"];
 
-                vm.website = WebsiteService.findWebsiteById(vm.websiteId);
-                vm.websitelist = WebsiteService.findWebsitesByUser(vm.userId);
+                var promise = WebsiteService.findWebsiteById(vm.websiteId);
+                promise.success(onFindWebsiteByIdSuccess);
+                promise.error(onFindWebsiteByIdError);
 
-                console.log("Website id is : " + vm.website);
+                //vm.websitelist = WebsiteService.findWebsitesByUser(vm.userId);
             }
 
             init();
 
             function updateWebsite(website) {
 
-                WebsiteService.updateWebsite(vm.websiteId, website);
+                var promise = WebsiteService.updateWebsite(vm.websiteId, website);
 
-                $location.url("/user/" + vm.userId + "/website");
+                promise.success(onUpdateWebsiteSuccess);
+                promise.error(onUpdateWebsiteError);
             }
 
 
             function deleteWebsite() {
 
-                if(WebsiteService.deleteWebsite(vm.websiteId)) {
-                    console.log(true);
-                    $location.url("/user/" + vm.userId + "/website");
-                };
-
+                var promise = WebsiteService.deleteWebsite(vm.websiteId);
+                promise.success(onDeleteWebsiteSuccess);
+                promise.error(onDeleteWebsiteError);
             }
+
+
+            // Promise functions
+            function onUpdateWebsiteSuccess(response) {
+
+                $location.url("/user/" + vm.userId + "/website");
+            }
+
+            function onUpdateWebsiteError(response) {
+
+                $location.url("/user/" + vm.userId + "/website");
+            }
+
+
+            function onDeleteWebsiteSuccess(response) {
+                console.log(response);
+                if(response != "OK"){
+                    console.log("Failed to delete website");
+                }
+                $location.url("/user/" + vm.userId + "/website");
+            }
+
+            function onDeleteWebsiteError(response) {
+
+                if(response != "OK"){
+                    console.log("Failed to delete website");
+                }
+
+                $location.url("/user/" + vm.userId + "/website");
+            }
+
+
+
+            function onFindWebsiteByIdSuccess(response) {
+
+                vm.website = response;
+            }
+
+            function onFindWebsiteByIdError(response) {
+                vm.website = response;
+            }
+
         }
 
 

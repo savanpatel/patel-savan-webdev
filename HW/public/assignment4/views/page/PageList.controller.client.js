@@ -4,20 +4,31 @@
         .module("WebAppMaker")
         .controller("PageListController", PageListController)
 
-        function PageListController($location, PageService, $routeParams) {
+        function PageListController(PageService, $routeParams) {
 
              var vm = this;
              vm.userId = $routeParams["uid"];
              vm.websiteId = $routeParams["wid"];
              function init() {
 
-                    console.log(vm.websiteId);
-                    vm.pagelist = PageService.findPageByWebsiteId(vm.websiteId);
-                    console.log(vm.pagelist);
+                    var promise = PageService.findPageByWebsiteId(vm.websiteId);
+                    promise.success(onFindPageByWebsiteIdSuccess);
+                    promise.error(onFindPageByWebsiteIdError)
              }
 
              init();
+
+             function onFindPageByWebsiteIdSuccess(response) {
+                 vm.pagelist = response;
+             }
+
+            function onFindPageByWebsiteIdError(response) {
+                vm.pagelist = null;
+            }
+
         }
+
+
 
 
 })();

@@ -16,32 +16,56 @@
             vm.updateWidget = updateWidget;
 
             function init() {
-
-
-                vm.w = WidgetService.findWidgetById(vm.widgetId);
+                var promise = WidgetService.findWidgetById(vm.widgetId);
+                promise.success(onFindWidgetByIdSuccess);
+                promise.error(onFindWidgetByIdError);
             }
 
             init();
 
             function updateWidget() {
 
-                console.log("Updating widget with id : " + vm.w._id)
-                WidgetService.updateWidget(vm.w._id, vm.w);
-
-                vm.w = WidgetService.findWidgetById(vm.widgetId);
-                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget");
-                vm.widgetlist = WidgetService.findWidgetsByPageId(vm.pageId);
-            }
+                var promise = WidgetService.updateWidget(vm.w._id, vm.w);
+                promise.success(onUpdateWidgetSuccess);
+                promise.error(onUpdateWidgetError);
+             }
 
             function deleteWidget() {
-                console.log("Returned : " + WidgetService.deleteWidget(vm.widgetId));
-                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget");
-                vm.widgetlist = WidgetService.findWidgetsByPageId(vm.pageId);
-                console.log("Widget list size : " + vm.widgetlist.length);
+                var promise = WidgetService.deleteWidget(vm.w._id);
+
+                promise.success(onDeleteWidgetSuccess);
+                promise.error(onDeleteWidgetError);
             }
 
             vm.headingSizes = [1,2,3,4,5];
 
+
+            // promise functions.
+            function onFindWidgetByIdSuccess(response) {
+                vm.w = response;
+            }
+
+            function onFindWidgetByIdError(response) {
+                vm.w = null;
+            }
+
+
+            function onUpdateWidgetSuccess(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget");
+            }
+
+            function onUpdateWidgetError(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget");
+            }
+
+
+            function onDeleteWidgetSuccess(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget");
+            }
+
+            function onDeleteWidgetError(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget");
+            }
         }
 
 

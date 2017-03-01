@@ -17,11 +17,9 @@
 
             function init() {
 
-                console.log(vm.websiteId);
-                vm.pagelist = PageService.findPageByWebsiteId(vm.websiteId);
-                console.log(vm.pagelist);
-
-                vm.page = PageService.findPageById(vm.pageId);
+                var promise = PageService.findPageById(vm.pageId);
+                promise.success(onFindPageByIdSuccess);
+                promise.error(onFindPageByIdError);
             }
 
             init();
@@ -29,15 +27,50 @@
 
             function updatePage() {
                 if(null != vm.page) {
-                    PageService.updatePage(vm.pageId, vm.page);
-                    $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
+                    var promise = PageService.updatePage(vm.pageId, vm.page);
+
+                    promise.success(onUpdatePageSuccess);
+                    promise.error(onUpdatePageError);
+
                 }
             }
 
 
             function deletePage() {
-                PageService.deletePage(vm.pageId);
+                var promise = PageService.deletePage(vm.pageId);
+                promise.success(onDeletePageSuccess);
+                promise.error(onDeletePageError);
+            }
+
+
+
+            // promise functions.
+            function onUpdatePageSuccess(response) {
                 $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
+            }
+
+
+            function onUpdatePageError(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
+            }
+
+
+
+            function onDeletePageSuccess(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
+            }
+
+
+            function onDeletePageError(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
+            }
+
+            function onFindPageByIdSuccess(response) {
+                vm.page = response;
+            }
+
+            function onFindPageByIdError(response) {
+                vm.page = null;
             }
         }
 })();

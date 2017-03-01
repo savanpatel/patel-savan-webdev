@@ -26,17 +26,29 @@
                    if(website != null && website.name != null && website.description != null &&
                        website.name != "" && website.description != "") {
 
-                       var newWebsite = WebsiteService.createWebsite(vm.userId, website);
-                       if(newWebsite){
-                           vm.websitelist = WebsiteService.findWebsitesByUser(vm.userId);
-                       }
+                       var promise = WebsiteService.createWebsite(vm.userId, website);
 
-                       vm.website = null;
+                       promise.success(onCreateWebsiteSuccess);
+                       promise.error(onCreateWebsiteError);
                    }
-
-                   $location.url("/user/" + vm.userId + "/website");
-
             }
+
+
+            // Promise functions.
+            function onCreateWebsiteSuccess(response) {
+                var newWebsite = response;
+                if(newWebsite){
+                    vm.websitelist = WebsiteService.findWebsitesByUser(vm.userId);
+                }
+
+                vm.website = null;
+                $location.url("/user/" + vm.userId + "/website");
+            }
+
+            function onCreateWebsiteError(response) {
+                $location.url("/user/" + vm.userId + "/website");
+            }
+
         }
 
 

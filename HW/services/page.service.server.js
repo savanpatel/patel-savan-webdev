@@ -128,7 +128,6 @@ module.exports = function (app) {
 
         var userPages = [];
         for(var p in pages) {
-            console.log(p.websiteId);
             if(pages[p].websiteId == websiteId) {
                 userPages.push(pages[p]);
             }

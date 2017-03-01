@@ -3,7 +3,7 @@
         .module("WebAppMaker")
         .config(Config);
 
-    function Config($routeProvider) {
+    function Config($routeProvider, $httpProvider) {
         $routeProvider
             .when("/", {
                 templateUrl: "views/user/login.view.client.html",
@@ -71,5 +71,8 @@
                 controllerAs: "model"
             })
             .otherwise({redirectTo : '/login'});
+
+        $httpProvider.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+        $httpProvider.defaults.headers.put['Content-Type'] = 'application/json;charset=utf-8';
     }
 })();

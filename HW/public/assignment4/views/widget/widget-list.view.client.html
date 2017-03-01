@@ -10,42 +10,45 @@
     </div>
 </nav>
 
+
 <div class="container-fluid container-if-fixed-header container-if-fixed-footer">
 
-    <div class="row website-list-group-item" ng-repeat="w in model.widgetlist">
+    <div sortable-item>
+        <div class="row website-list-group-item" ng-repeat="w in model.widgetlist">
 
-        <div class="col-xs-12">
-            <div ng-switch="w.widgetType">
-                <div ng-switch-when="HEADER">
-                    <ng-include src="'views/widget/widget-HEADING.view.client.html'">
+            <div class="col-xs-12">
+                <div ng-switch="w.widgetType">
+                    <div ng-switch-when="HEADER">
+                        <ng-include src="'views/widget/widget-HEADING.view.client.html'">
+                    </div>
+
+                    <div ng-switch-when="IMAGE">
+                        <ng-include src="'views/widget/widget-IMAGE.view.client.html'">
+                    </div>
+
+                    <div ng-switch-when="YOUTUBE">
+                        <ng-include src="'views/widget/widget-YOUTUBE.view.client.html'">
+                    </div>
+
+                    <div ng-switch-when="HTML">
+                        <ng-include src="'views/widget/widget-HTML.view.client.html'">
+                    </div>
+
+                    <div ng-switch-default="">
+                        <ng-include src="'views/widget/widget-DEFAULT.view.client.html'">
+                    </div>
+
+                </div>
+                <div class="control">
+                    <p class="navbar-text pull-right pull-left-margin-1em"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget" class="navbar-link"><i class="fa fa-bars"></i></a></p>
+                    <p class="navbar-text pull-right"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{w._id}}" class="navbar-link"><i class="fa fa-cog"></i></a></p>
                 </div>
 
-                <div ng-switch-when="IMAGE">
-                    <ng-include src="'views/widget/widget-IMAGE.view.client.html'">
-                </div>
-
-                <div ng-switch-when="YOUTUBE">
-                    <ng-include src="'views/widget/widget-YOUTUBE.view.client.html'">
-                </div>
-
-                <div ng-switch-when="HTML">
-                    <ng-include src="'views/widget/widget-HTML.view.client.html'">
-                </div>
-
-                <div ng-switch-default="">
-                    <ng-include src="'views/widget/widget-DEFAULT.view.client.html'">
-                </div>
+                <br/>
+                <br/>
+                <br/>
 
             </div>
-            <div class="control">
-                <p class="navbar-text pull-right pull-left-margin-1em"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget" class="navbar-link"><i class="fa fa-bars"></i></a></p>
-                <p class="navbar-text pull-right"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{w._id}}" class="navbar-link"><i class="fa fa-cog"></i></a></p>
-            </div>
-
-            <br/>
-            <br/>
-            <br/>
-
         </div>
     </div>
 

@@ -40,10 +40,20 @@
                         break;
                 }
                 widget.widgetType = widgetType;
-                var newWidget = WidgetService.createWidget(vm.pageId, widget );
+                var promise = WidgetService.createWidget(vm.pageId, widget );
 
-                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/" + newWidget._id);
+                promise.success(onAddWidgetSuccess);
+                promise.error(onAddWidgetError);
+            }
 
+
+            // promise functions.
+            function onAddWidgetSuccess(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/" + response._id);
+            }
+
+            function onAddWidgetError(response) {
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/");
             }
         }
 

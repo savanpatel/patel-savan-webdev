@@ -23,19 +23,31 @@
                                    firstName:user.firstName,
                                    lastName: user.lastName,
                                    email: user.email};
-                    var u = UserService.createUser(newUser);
-                    console.log(u._id);
+                    var promise = UserService.createUser(newUser);
 
-                    if(u) {
-                               $location.url("/user/" + u._id);
-                    }
-                    else {
-                        vm.error = "Server Error! Failed to create user.";
-                    }
+                    promise.success(onRegisterSuccess);
+                    promise.error(onRegisterError);
                 }
                 else {
                     vm.error = "Passwords do not match!";
                 }
+            }
+
+
+            // Promise functions.
+            function onRegisterSuccess(response) {
+
+                var u = response;
+                if(u) {
+                    $location.url("/user/" + u._id);
+                }
+                else {
+                    vm.error = "Server Error! Failed to create user.";
+                }
+            }
+
+            function onRegisterError(response) {
+                vm.error = "Server Error! Failed to create user. Error : " + response;
             }
         }
 })();

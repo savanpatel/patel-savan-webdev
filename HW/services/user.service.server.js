@@ -98,6 +98,7 @@ module.exports = function (app) {
     function updateUser(req, res) {
 
         var user = req.body;
+
         if(null == user){
             res.send(500);
         }
@@ -120,7 +121,6 @@ module.exports = function (app) {
 
         var userId = req.params.userId;
 
-        console.log(userId);
         if(null == userId){
             res.send(404);
         }

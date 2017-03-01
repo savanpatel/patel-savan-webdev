@@ -22,18 +22,33 @@
                      vm.error = "Invalid Credentials";
                      return;
                  }
-                 console.log(user);
-                 user = UserService.findUserByCredentials(user.username, user.password);
 
-                 if(user) {
-                     $location.url("/user/" + user._id);
-                 }
-                 else {
-                     vm.error = "Invalid Credentials";
-                 }
+
+                 var promise = UserService.findUserByCredentials(user.username, user.password);
+
+                 promise.success(successfulLogin);
+                 promise.error(failedLogin);
             }
 
 
+            //-----------------Promise functions.
+
+            function successfulLogin(response)
+            {
+                var user = response;
+                if(user) {
+                    $location.url("/user/" + user._id);
+                }
+                else {
+                    vm.error = "Invalid Credentials";
+                }
+            }
+
+
+            function failedLogin(response) {
+
+                vm.error = "Could not find user.  [Error : " + response + "]";
+            }
         }
 
 

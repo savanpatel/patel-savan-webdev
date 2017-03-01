@@ -1,11 +1,17 @@
 module.exports = function (app) {
 
+    var multer = require('multer'); // npm install multer --save
+    var upload = multer({ dest: __dirname+'/../public/uploads' });
+    var path = require('path');
+
+
     app.post("/api/page/:pageId/widget", createWidget);
     app.get("/api/page/:pageId/widget", findAllWidgetsForPage);
     app.get("/api/widget/:widgetId", findWidgetById);
     app.put("/api/widget/:widgetId", updateWidget);
     app.delete("/api/widget/:widgetId", deleteWidget);
-
+    app.put("/api/page/:pageId/widget", reorderWidget);
+    app.post("/api/upload", upload.single('myFile'), uploadImage);
 
     /*-----------------------------------------------------------------------*/
     var widgets = [
@@ -46,7 +52,6 @@ module.exports = function (app) {
     function findAllWidgetsForPage(req, res) {
 
         var pageId = req.params.pageId;
-
         if(null == pageId){
 
             res.send(500);
@@ -112,6 +117,61 @@ module.exports = function (app) {
         }
     }
 
+    function reorderWidget(req, res) {
+
+        var widgetIndexInfo = req.body;
+
+        if(widgetIndexInfo.initial == widgetIndexInfo.final)
+        {
+            res.send(200);
+            return;
+        }
+
+        var pageId = req.params.pageId;
+
+        var widgetList = findAllWidgetsForPageHelper(pageId);
+
+        widgets = widgets.filter( function( w ) {
+            return widgetList.indexOf( w ) < 0;
+        } );
+
+
+        var tempWidget = JSON.parse(JSON.stringify(widgetList[widgetIndexInfo.initial]));
+        widgetList.splice(widgetIndexInfo.initial, 1);
+
+        widgetList.splice(widgetIndexInfo.final, 0, tempWidget);
+
+        for(var w in widgetList){
+            widgets.push(widgetList[w]);
+        }
+        res.send(200);
+    }
+    
+    
+    
+    function uploadImage(req, res) {
+
+        console.log("In file upload");
+        console.log(req.body);
+        var widgetId      = req.body.widgetId;
+        var width         = req.body.width;
+        var myFile        = req.file;
+
+        var originalname  = myFile.originalname; // file name on user's computer
+        var filename      = myFile.filename;     // new file name in upload folder
+        var path          = myFile.path;         // full path of uploaded file
+        var destination   = myFile.destination;  // folder where file is saved to
+        var size          = myFile.size;
+        var mimetype      = myFile.mimetype;
+
+        var widget = findWidgetByIdHelper(widgetId);
+        widget.url = "localhost:3000/uploads/" + filename;
+        widget.isUploaded = true;
+        res.redirect("/assignment4/#/user/" + req.body.userId + "/website/" + req.body.websiteId + "/page/" + req.body.pageId + "/widget");
+
+
+
+    }
     /*-----------------------------------------------------------------------*/
 
     function createWidgetHelper(pageId, widget)
@@ -156,8 +216,8 @@ module.exports = function (app) {
     function findAllWidgetsForPageHelper(pageId) {
 
         var widgetList = [];
-        for(var w in widgets) {
 
+        for(var w in widgets) {
             if(widgets[w].pageId == pageId) {
                 widgetList.push(widgets[w]);
             }

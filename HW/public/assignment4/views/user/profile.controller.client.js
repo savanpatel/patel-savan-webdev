@@ -11,8 +11,39 @@
             vm.updateUser = updateUser;
 
             function init() {
-                vm.user = UserService.findUserById(vm.userId);
 
+
+                var promise = UserService.findUserById(vm.userId);
+
+                promise.success(findUserByIdSuccess);
+                promise.error(findUserByIdError);
+            }
+            init();
+
+
+            function updateUser(user)
+            {
+                var promise = UserService.updateUser(vm.userId, user);
+
+                promise.success(successfulUpdate);
+                promise.error(failedUpdate);
+            }
+
+
+            //------- Promise functions.
+            function successfulUpdate(response) {
+                vm.user = response;
+            }
+
+
+            function failedUpdate(response) {
+                init();
+            }
+
+
+            function findUserByIdSuccess(response) {
+
+                vm.user = response;
                 if(vm.user != undefined || vm.user != null){
 
                 }else{
@@ -20,12 +51,11 @@
                     $location.url("/login");
                 }
             }
-            init();
 
 
-            function updateUser(user)
-            {
-                UserService.updateUser(vm.userId, user);
+            function findUserByIdError(response) {
+
+                $location.url("/login");
             }
         }
 

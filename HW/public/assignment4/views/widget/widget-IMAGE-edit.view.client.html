@@ -1,4 +1,4 @@
-<form>
+<form action="/api/upload" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" ng-model="model.w.name" class="form-control" id="name" placeholder="Name">
@@ -13,6 +13,11 @@
         <input type="text" ng-model="model.w.width" class="form-control" id="width" placeholder="200px">
     </div>
 
+    <input  name="widgetId" value="{{model.w._id}}"   style="display: none"/>
+    <input  name="userId" value="{{model.userId}}"   style="display: none"/>
+    <input  name="websiteId" value="{{model.websiteId}}"   style="display: none"/>
+    <input  name="pageId" value="{{model.pageId}}"   style="display: none"/>
+
     <p class="text-muted">Upload Image or provide URL</p>
     <div class="form-group">
         <label for="urltext">URL</label>
@@ -20,12 +25,12 @@
     </div>
     <div class="form-group">
         <label for="fileupload">Upload</label>
-        <input type="file" class="form-control btn-block btn-file" id="fileupload">
+        <input type="file" name="myFile" class="form-control btn-block btn-file" id="fileupload">
     </div>
 
     <div class="form-group">
-        <a class="btn btn-success btn-block"
-           href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{model.widgetId}}/image">Upload Image</a>
+        <button type="submit"   class="btn btn-block btn-primary">Upload Image</button>
+
     </div>
     <div class="form-group">
         <a class="btn btn-danger btn-block"
