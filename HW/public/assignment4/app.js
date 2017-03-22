@@ -1,4 +1,4 @@
 (function () {
    angular
-       .module("WebAppMaker", ["ngRoute", "ngSanitize"]);
+       .module("WebAppMaker", ["ngRoute", "ngSanitize", "textAngular"]);
 })();

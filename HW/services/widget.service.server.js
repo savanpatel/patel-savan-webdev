@@ -123,9 +123,48 @@ module.exports = function (app, mongooseAPI) {
 
         var pageId = req.params.pageId;
 
-        var widgetList = findAllWidgetsForPageHelper(pageId);
+      //  var widgetList = findAllWidgetsForPageHelper(pageId);
 
-        widgets = widgets.filter( function( w ) {
+        var widgetList = [];
+
+        widgetModel.findAllWidgetsForPage(pageId)
+            .then(function (widgets) {
+                var widgetList = widgets;
+                var widgetListIds = [];
+
+                for(var w in widgetList){
+
+                    widgetListIds.push(widgetList[w]._id);
+
+                }
+
+                widgetModel.deleteMultiWidgets(widgetListIds)
+                    .then(function (status) {
+
+                        var tempWidget = JSON.parse(JSON.stringify(widgetList[widgetIndexInfo.initial]));
+                        widgetList.splice(widgetIndexInfo.initial, 1);
+
+                        widgetList.splice(widgetIndexInfo.final, 0, tempWidget);
+
+                        widgetModel.insertMulti(widgetList)
+                            .then(function (status) {
+                                res.sendStatus(200);
+
+                            }, function (err) {
+                                res.sendStatus(200).send(err);
+                            });
+
+                    }, function (err) {
+                        res.sendStatus(500).send(err);
+                    });
+
+            }, function (err) {
+                // do nothing.
+            });
+
+
+
+        /*widgets = widgets.filter( function( w ) {
             return widgetList.indexOf( w ) < 0;
         } );
 
@@ -137,7 +176,7 @@ module.exports = function (app, mongooseAPI) {
 
         for(var w in widgetList){
             widgets.push(widgetList[w]);
-        }
+        }*/
         res.send(200);
     }
     
@@ -243,11 +282,20 @@ module.exports = function (app, mongooseAPI) {
 
         var widgetList = [];
 
-        for(var w in widgets) {
+        widgetModel.findAllWidgetsForPage(pageId)
+            .then(function (widgets) {
+                widgetList = widgets;
+            }, function (err) {
+               // do nothing.
+            });
+
+
+
+        /*for(var w in widgets) {
             if(widgets[w].pageId == pageId) {
                 widgetList.push(widgets[w]);
             }
-        }
+        }*/
         return widgetList;
     }
 

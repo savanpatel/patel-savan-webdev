@@ -14,6 +14,7 @@
             vm.widgetId = $routeParams["widgetid"];
             vm.deleteWidget = deleteWidget;
             vm.updateWidget = updateWidget;
+            vm.searchFlickr = searchFlickr;
 
             function init() {
                 var promise = WidgetService.findWidgetById(vm.widgetId);
@@ -37,6 +38,11 @@
                 promise.error(onDeleteWidgetError);
             }
 
+            
+            function searchFlickr() {
+                console.log("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/" + vm.widgetId + "/flickr");
+                $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/" + vm.widgetId + "/flickr");
+            }
             vm.headingSizes = [1,2,3,4,5];
 
 

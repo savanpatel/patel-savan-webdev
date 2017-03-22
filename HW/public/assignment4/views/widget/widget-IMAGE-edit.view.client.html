@@ -23,17 +23,25 @@
         <label for="urltext">URL</label>
         <input type="text" ng-model="model.w.url" class="form-control" id="urltext" value="http://www.images.google.com/23rTGf4oF">
     </div>
+
+
     <div class="form-group">
         <label for="fileupload">Upload</label>
-        <input type="file" name="myFile" class="form-control btn-block btn-file" id="fileupload">
+        <input type="file" name="myFile" class="form-control btn-block btn-file" id="fileupload"/>
     </div>
 
     <div class="form-group">
-        <button type="submit"   class="btn btn-block btn-primary">Upload Image</button>
+        <button type="submit"  class="btn btn-block btn-primary">Upload Image</button>
 
     </div>
+
     <div class="form-group">
         <a class="btn btn-danger btn-block"
            ng-click="model.deleteWidget()">Delete</a>
     </div>
 </form>
+
+<div class="form-group">
+    <label for="flickr">Or Search from Flickr</label>
+    <button class="form-control btn-block btn-success" id="flickr" ng-click="model.searchFlickr()">Search from Flickr</button>
+</div>

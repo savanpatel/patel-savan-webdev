@@ -1,0 +1,42 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="navbar-header btn-block">
+                <p class="navbar-text pull-left"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget" class="navbar-link"><i class="fa fa-chevron-left"></i></a></p>
+                <a class="navbar-brand" href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/new">Choose Widget</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid container-if-fixed-header container-if-fixed-footer">
+
+    <div class="input-group">
+        <input ng-model="searchText" type="text" class="form-control">
+        <span class="input-group-btn">
+        <a ng-click="model.searchPhotos(searchText)" class="btn btn-default" type="button">
+            <span class="glyphicon glyphicon-search"></span>
+        </a>
+    </span>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-4" ng-repeat="photo in model.photos.photo">
+            <img ng-click="model.selectPhoto(photo)"
+                 ng-src="https://farm{{photo.farm}}.staticflickr.com/{{photo.server}}/{{photo.id}}_{{photo.secret}}_s.jpg"/>
+        </div>
+    </div>
+
+</div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom container-fluid">
+        <div class="navbar-text pull-right row">
+            <div class="text-center col-md-12">
+                <a href="#/user/{{model.userId}}">
+                    <span class="fa fa-user fa-2x"></span>
+                </a>
+            </div>
+        </div>
+
+    </nav>

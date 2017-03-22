@@ -34,6 +34,10 @@
                         <ng-include src="'views/widget/widget-HTML.view.client.html'">
                     </div>
 
+                    <div ng-switch-when="TEXT">
+                        <ng-include src="'views/widget/widget-TEXT.view.client.html'">
+                    </div>
+
                     <div ng-switch-default="">
                         <ng-include src="'views/widget/widget-DEFAULT.view.client.html'">
                     </div>

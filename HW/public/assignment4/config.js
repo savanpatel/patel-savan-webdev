@@ -70,6 +70,11 @@
                 controller: "EditWidgetController",
                 controllerAs: "model"
             })
+            .when("/user/:uid/website/:wid/page/:pid/widget/:widgetid/flickr", {
+                templateUrl: "views/widget/widget-flickr-search.view.client.html",
+                controller: "FlickrController",
+                controllerAs: "model"
+            })
             .otherwise({redirectTo : '/login'});
 
         $httpProvider.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';

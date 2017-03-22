@@ -1,6 +1,5 @@
 module.exports = function (app, mongoose) {
 
-    //TODO: add reorder widget support.
 
     var q = require('q');
 
@@ -13,7 +12,9 @@ module.exports = function (app, mongoose) {
         findAllWidgetsForPage:findAllWidgetsForPage,
         findWidgetById: findWidgetById,
         updateWidget: updateWidget,
-        deleteWidget: deleteWidget
+        deleteWidget: deleteWidget,
+        deleteMultiWidgets:deleteMultiWidgets,
+        insertMulti:insertMulti
     };
 
     return api;
@@ -106,4 +107,35 @@ module.exports = function (app, mongoose) {
         return deferred.promise;
     }
 
+    function deleteMultiWidgets(widgetIdList) {
+        var deferred = q.defer();
+        widgetModel.remove({_id: {$in: widgetIdList}},function (err) {
+            if(err) {
+                console.log("ERROR: [deleteMultiWidgets]: " + err);
+                deferred.abort(err);
+            }
+            else {
+                deferred.resolve(200);
+            }
+        });
+
+        return deferred.promise;
+    }
+
+
+    function insertMulti(widgets) {
+        var deferred = q.defer();
+
+        widgetModel.insertMany(widgets, function (err, docs) {
+            if(err) {
+                console.log("ERROR: [insertMulti]: " + err);
+                deferred.abort(err);
+            }
+            else {
+                deferred.resolve(200);
+            }
+        });
+
+        return deferred.promise;
+    }
 };

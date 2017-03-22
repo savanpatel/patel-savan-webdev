@@ -38,7 +38,7 @@
 
                 var url = widgetUrl;
 
-                if(isUploaded != undefined){
+                if(isUploaded != undefined && isUploaded == true){
 
                     var parts = widgetUrl.split('/');
                     var id = parts[parts.length - 1];

@@ -32,11 +32,14 @@
                         break;
 
                     case "HTML":
-                        var widget = {size:1, text:"<p> Hello </p>"};
+                        var widget = {size:1, text:""};
                         break;
 
                     case "YOUTUBE":
                         var widget = {width:"100%", url:"https://youtu.be/AM2Ivdi9c4E"};
+                        break;
+                    case "TEXT":
+                        var widget = {text:"Hello World"};
                         break;
                 }
                 widget.widgetType = widgetType;
