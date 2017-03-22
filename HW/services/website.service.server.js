@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, mongooseAPI) {
 
 
     app.get("/api/user/:userId/website", findAllWebsitesForUser);
@@ -7,17 +7,10 @@ module.exports = function (app) {
     app.put("/api/website/:websiteId", updateWebsite);
     app.delete("/api/website/:websiteId", deleteWebsite);
 
-    /*-----------------------------------------------------------------------*/
-    var websites = [
-        { "_id": "123", "name": "Facebook",    "developerId": "456", "description": "Lorem" },
-        { "_id": "234", "name": "Tweeter",     "developerId": "456", "description": "Lorem" },
-        { "_id": "456", "name": "Gizmodo",     "developerId": "456", "description": "Lorem" },
-        { "_id": "567", "name": "Tic Tac Toe", "developerId": "123", "description": "Lorem" },
-        { "_id": "678", "name": "Checkers",    "developerId": "123", "description": "Lorem" },
-        { "_id": "789", "name": "Chess",       "developerId": "234", "description": "Lorem" },
-        { "_id": "790", "name": "Self Help",   "developerId": "234", "description": "Lorem" }
-    ];
 
+
+    var userModel = mongooseAPI.userModelAPI;
+    var websiteModel = mongooseAPI.websiteModelAPI;
 
 
     /*-----------------------------------------------------------------------*/
@@ -34,9 +27,7 @@ module.exports = function (app) {
         }
         else{
 
-            var website = createWebsiteHelper(userId, newWebsite);
-            res.send(website);
-
+           createWebsiteHelper(userId, newWebsite, res);
         }
     }
 
@@ -49,12 +40,16 @@ module.exports = function (app) {
 
         if(null == userId){
             res.send(404);
+
         }
         else{
+             websiteModel.findAllWebsitesForUser(userId)
+                 .then(function (websites) {
+                     res.send(websites);
+                 }, function (err) {
 
-              websiteList = findAllWebsitesForUserHelper(userId);
-
-              res.send(websiteList);
+                     res.sendStatus(500).send(err);
+                 });
         }
     }
 
@@ -71,12 +66,12 @@ module.exports = function (app) {
         }
         else
         {
-            var website = findWebsiteByIdHelper(websiteId);
-            if(null == website){
-                res.send(404);
-            }else{
-                res.send(website);
-            }
+           websiteModel.findWebsiteById(websiteId)
+               .then(function (website) {
+                   res.send(website);
+               }, function (err) {
+                   res.sendStatus(500).send(err);
+               });
 
         }
 
@@ -94,11 +89,17 @@ module.exports = function (app) {
 
         }
         else{
-                var updatedWebsite = updateWebsiteHelper(websiteId, website);
-                res.send(updatedWebsite);
+            websiteModel.updateWebsite(websiteId, website)
+                .then(function (resp) {
+                    res.send(website);
+                }, function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
 
     }
+
+
 
 
     function deleteWebsite(req, res) {
@@ -110,88 +111,53 @@ module.exports = function (app) {
         }
         else {
 
-            if(deleteWebsiteHelper(websiteId)) {
-
-                res.send(200);
-
-            }else{
-
-                res.send(503);
-            }
+            websiteModel.deleteWebsite(websiteId)
+                .then(function (status) {
+                    res.sendStatus(status);
+                }, function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
 
     }
-    /*-----------------------------------------------------------------------*/
 
-    function createWebsiteHelper(userId, website)
+
+
+
+    function createWebsiteHelper(userId, website, res)
     {
-        var newWebsite = {_id:websites.length + 1,
-            name: website.name,
-            developerId:userId,
-            description:website.description};
-
-        websites.push(newWebsite);
-
-        return newWebsite;
-    }
-
-
-
-    function findAllWebsitesForUserHelper(userId) {
-        var userWebSites = [];
-        for(var w in websites) {
-
-            if(websites[w].developerId == userId) {
-                userWebSites.push(websites[w]);
-            }
-        }
-
-        return userWebSites;
-
+        websiteModel.createWebsiteForUser(userId, website)
+            .then(function (dbWebsite) {
+                if(null == dbWebsite){
+                    res.sendStatus(500);
+                } else {
+                    // update user.
+                    updateUserForNewWebsite(userId, dbWebsite, res);
+                }
+            }, function (err) {
+                res.sendStatus(500).send(err);
+            });
     }
 
 
 
 
-    function findWebsiteByIdHelper(websiteId){
+    function updateUserForNewWebsite(userId, website, res) {
 
-        for(var w in websites) {
+        userModel.findUserById(userId)
+            .then(function (user) {
 
-            if(websites[w]._id == websiteId) {
-                return websites[w];
-            }
-        }
-
-        return null;
-    }
-
-
-
-    function updateWebsiteHelper(websiteId, website){
-        for(var w in websites) {
-
-            if(websites[w]._id == websiteId) {
-                websites[w].description = website.description;
-                websites[w].name = website.name;
-
-                return websites[w];
-            }
-        }
-        return null;
-    }
+                user.websites.push(website._id);
+                userModel.updateUser(userId, user)
+                    .then(function (user) {
+                        res.send(website);
+                    }, function (err) {
+                        res.sendStatus(500).send(err);
+                    });
 
 
-    function deleteWebsiteHelper(websiteId) {
-        for(var w in websites) {
-
-            if(websites[w]._id == websiteId) {
-
-                websites.splice(w, 1);
-                return true;
-            }
-
-        }
-
-        return false;
+            }, function (err) {
+                res.sendStatus(500).send(err);
+            });
     }
 }

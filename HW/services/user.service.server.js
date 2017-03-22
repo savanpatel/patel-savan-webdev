@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, mongooseAPI) {
 
 
     app.get("/api/user", findUserByCredentials);
@@ -8,15 +8,9 @@ module.exports = function (app) {
     app.delete("/api/user/:userId?", deleteUser);
 
 
-    var users = [
-        {_id: "123", username: "alice", password: "alice", firstName: "Alice", lastName: "Wonder", email:"alice@wonderland.com"},
-        {_id: "234", username: "bob", password: "bob", firstName: "Bob", lastName: "Marley", email:"bob@marley.com"},
-        {_id: "345", username: "charly", password: "charly", firstName: "Charly", lastName: "Garcia", email: "charley@gmail.com"},
-        {_id: "456", username: "jannunzi", password: "jannunzi", firstName: "Jose", lastName: "Annunzi", email:"jannunzi@gmail.com"}
-    ];
 
-
-
+    // API for mongoose user model library.
+    var userModel = mongooseAPI.userModelAPI;
 
 
     /*
@@ -30,27 +24,21 @@ module.exports = function (app) {
         var username = queryParams.username;
         var password = queryParams.password;
 
-        var user = null;
+        userModel
+            .findUserByCreadentials(username, password)
+            .then(function (user) {
 
-        if(null == password)
-        {
-            user = findUserByUsernameHelper(username);
-        }
-        else {
+                if(null == user) {
+                    // user not found in db.
+                    res.sendStatus(404);
+                } else {
+                    res.send(user);
+                }
 
-            user = findUserByCredentialsHelper(username, password);
-        }
-
-
-        if(null == user) {
-
-            res.send(404);
-
-        }
-        else{
-
-            res.send(user);
-        }
+            }, function (err) {
+                // error on database side.
+                res.sendStatus(404).send(err);
+            });
 
     }
 
@@ -62,57 +50,68 @@ module.exports = function (app) {
      function createUser(req, res) {
 
          var user = req.body;
-         if(null == user)
-         {
-             res.send(500);
-         }
 
-         var newUser = createUserHelper(user);
-         if(null == newUser)
-         {
-             //internal server error.
-             res.send(500);
+         if(null == user){
+             res.sendStatus(500);
+             return;
          }
-         else
-         {
-             res.send(newUser);
-         }
+         userModel.createUser(user)
+             .then(function (dbUser) {
+
+                 if(null == dbUser){
+                     res.sendStatus(500);
+                 } else {
+                     res.send(dbUser);
+                 }
+
+             }, function (err) {
+                 res.sendStatus(500).send(err);
+             });
     }
 
 
 
 
     function findUserById(req, res) {
+         var userId = req.params.userId;
 
-         var user = findUserByIdHelper(req.params.userId);
+         userModel.findUserById(userId)
+             .then(function (user) {
+                 if(null == user){
+                     // user not found
+                     res.send(404);
+                 }else {
+                     // user found.
+                     res.send(user);
+                 }
 
-         if(null == user){
-             res.send(403);
-         }else {
+             }, function (err) {
+                 res.sendStatus(500).send(err);
+             });
 
-             res.send(user);
-         }
     }
 
 
     function updateUser(req, res) {
 
         var user = req.body;
+        var userId = req.params.userId;
 
         if(null == user){
             res.send(500);
+            return;
         }
 
-        user = updateUserHelper(user);
-
-        if(null == user){
-
-            res.send(500);
-
-        }else{
-
-            res.send(user);
-        }
+        userModel.updateUser(userId, user)
+            .then(function (dbUser) {
+                if(null == dbUser){
+                    res.sendStatus(500);
+                } else {
+                    res.send(user);
+                }
+            }, function (err) {
+                res.sendStatus(500).send(err);
+            });
 
     }
 
@@ -123,107 +122,15 @@ module.exports = function (app) {
 
         if(null == userId){
             res.send(404);
+            return;
         }
 
-        if(deleteUserHelper(userId)) {
-            res.send(200);
-        }
-        else{
-            res.send(500);
-        }
-
-    }
-
-    //-------------------------------------------------------------------------
-    //                         HELPER FUNCTIONS
-
-    /*Internal function to find user by username*/
-    function findUserByUsernameHelper(username) {
-
-        for(var u in users) {
-            if(users[u].username == username) {
-                return (users[u]);
-            }
-
-        }
-        return null;
-    }
-
-
-
-
-    /* Internal helper function to find the user by credentials.*/
-    function findUserByCredentialsHelper(username, password) {
-        for(var u in users) {
-            if(users[u].username == username && users[u].password == password) {
-                return (users[u]);
-            }
-
-        }
-        return null;
-    }
-
-
-
-    /* Internal helper function to find the user by id.*/
-    function findUserByIdHelper(userId){
-        for(var u in users) {
-            if(users[u]._id == userId) {
-                return (users[u]);
-            }
-
-        }
-        return null;
-    }
-
-
-
-    /*Internal function to create new user.*/
-    function createUserHelper(user) {
-        var newUser = {_id:users.length + 1,
-            username:user.username,
-            password: user.password,
-            firstName:user.firstName,
-            lastName:user.lastName,
-            email:user.email};
-
-        users.push(newUser);
-
-        return newUser;
-    }
-
-
-
-
-    function updateUserHelper(user) {
-
-        for (var u in users) {
-            if (users[u]._id == user._id) {
-                users[u].username = user.username;
-                users[u].firstName = user.firstName;
-                users[u].lastName = user.lastName;
-                users[u].password = user.password;
-                users[u].email = user.email;
-
-                return users[u];
-            }
-        }
-
-        return null;
-    }
-
-
-
-
-    function deleteUserHelper(userId) {
-
-        for(var u in users) {
-            if(users[u]._id == userId) {
-                users.splice(u,1);
-                return true;
-            }
-        }
-
-        return false;
+        console.log("Deleting user  " + userId)
+        userModel.deleteUser(userId)
+            .then(function (status) {
+                res.sendStatus(status);
+            }, function (err) {
+                res.sendStatus(500).send(err);
+            });
     }
 }
