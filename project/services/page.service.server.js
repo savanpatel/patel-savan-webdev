@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, mongooseAPI) {
 
     app.post("/api/website/:websiteId/page", createPage);
     app.get("/api/website/:websiteId/page", findAllPagesForWebsite);
@@ -7,19 +7,9 @@ module.exports = function (app) {
     app.delete("/api/page/:pageId", deletePage);
 
 
-    /*--------------------------------------------------------------------------------*/
-    var pages = [
-        { "_id": "321", "name": "Post 1", "websiteId": "456", "description": "Lorem" },
-        { "_id": "432", "name": "Post 2", "websiteId": "456", "description": "Lorem" },
-        { "_id": "543", "name": "Post 3", "websiteId": "456", "description": "Lorem" },
-        { "_id": "322", "name": "About", "websiteId": "789", "description": "Lorem" },
-        { "_id": "323", "name": "Careers", "websiteId": "789", "description": "Lorem" },
-        { "_id": "324", "name": "Work life balance", "websiteId": "790", "description": "Lorem" },
-        { "_id": "325", "name": "Time management", "websiteId": "790", "description": "Lorem" }
-    ];
+    var websiteModel = mongooseAPI.websiteModelAPI;
+    var pageModel = mongooseAPI.pageModelAPI;
 
-
-    /*-------------------------------------------------------------------------------*/
 
     function createPage(req, res) {
 
@@ -29,9 +19,8 @@ module.exports = function (app) {
         if(null == newPage || null == websiteId){
             res.send(500);
         }else{
-
-            var page = createPageHelper(websiteId, newPage);
-            res.send(page);
+            newPage.websiteId = websiteId;
+            createPageHelper(websiteId, newPage, res);
         }
     }
 
@@ -47,8 +36,12 @@ module.exports = function (app) {
             res.send(503);
         }else{
 
-            websiteList = findAllPagesForWebsiteHelper(websiteId);
-            res.send(websiteList);
+            pageModel.findAllPagesForWebsite(websiteId)
+                .then(function (websites) {
+                    res.send(websites);
+                }, function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
     }
 
@@ -61,13 +54,12 @@ module.exports = function (app) {
             res.send(500);
         }else{
 
-            var newpage =  findPageByIdHelper(pageId);
-            if(null == newpage){
-                res.send(404);
-            }else{
-                res.send(newpage);
-            }
-
+            pageModel.findPageById(pageId)
+                .then(function (page) {
+                    res.send(page);
+                }, function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
     }
 
@@ -82,10 +74,13 @@ module.exports = function (app) {
             res.send(503);
         }else{
 
-            var updatedPage =  updatePageHelper(pageId, page);
-            res.send(updatedPage);
+            pageModel.updatePage(pageId, page)
+                .then(function (resp) {
+                    res.send(page);
+                }, function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
-
     }
 
 
@@ -97,88 +92,46 @@ module.exports = function (app) {
 
             res.send(404);
         }else{
-
-            if(deletePageHelper(pageId)){
-                res.send(200);
-            }else{
-                res.send(500);
-            }
+            pageModel.deletePage(pageId)
+                .then(function (status) {
+                    res.sendStatus(status);
+                }, function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
     }
 
 
-    /*-------------------------------------------------------------------------------*/
 
-    function createPageHelper(websiteId, page)
+    function createPageHelper(websiteId, page ,res)
     {
-        var newPage = {_id:pages.length + 1,
-            name: page.name,
-            websiteId: websiteId,
-            description:page.description};
 
-        pages.push(newPage);
+        pageModel.createPage(websiteId, page)
+            .then(function (dbPage) {
 
-        return newPage;
+                updateWebsiteForNewPage(websiteId, dbPage, res);
+            }, function (err) {
+                res.sendStatus(500).send(err);
+            });
     }
 
+    function updateWebsiteForNewPage(websiteId, dbPage, res) {
+
+        websiteModel.findWebsiteById(websiteId)
+            .then(function (dbWebsite) {
+
+                dbWebsite.pages.push(dbPage._id);
+                websiteModel.updateWebsite(websiteId, dbWebsite)
+                    .then(function (website) {
+                        res.send(dbPage);
+                    }, function (err) {
+                        res.sendStatus(500).send(err);
+                    });
 
 
-
-    function findAllPagesForWebsiteHelper(websiteId) {
-
-        var userPages = [];
-        for(var p in pages) {
-            if(pages[p].websiteId == websiteId) {
-                userPages.push(pages[p]);
-            }
-        }
-        return userPages;
-    }
-
-
-
-    function findPageByIdHelper(pageId)  {
-
-        for(var p in pages) {
-
-            if(pages[p]._id == pageId) {
-                return pages[p];
-            }
-        }
-        return null;
-    }
-
-
-
-    function updatePageHelper(pageId, page){
-        for(var p in pages) {
-
-            if(pages[p]._id == pageId) {
-                pages[p].name= page.name;
-                pages[p].description = page.description;
-                pages[p].websiteId = page.websiteId;
-
-                return pages[p];
-            }
-        }
-
-        return null;
-    }
-
-
-
-    function deletePageHelper(pageId) {
-        for(var p in pages) {
-
-            if(pages[p]._id == pageId) {
-
-                pages.splice(p, 1);
-                return true;
-            }
-
-        }
-
-        return false;
+            }, function (err) {
+                res.sendStatus(500).send(err);
+            });
     }
 
 }

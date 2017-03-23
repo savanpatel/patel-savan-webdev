@@ -1,0 +1,80 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div class="navbar-header btn-block">
+                <p class="navbar-text pull-left"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page" class="navbar-link"><i class="fa fa-chevron-left"></i></a></p>
+                <a class="navbar-brand" href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget">Widgets</a>
+                <p class="navbar-text pull-right"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/new" class="navbar-link"><i class="fa fa-plus"></i></a></p>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid container-if-fixed-header container-if-fixed-footer">
+
+    <div sortable-item>
+        <div class="row website-list-group-item" ng-repeat="w in model.widgetlist">
+
+            <div class="col-xs-12">
+                <div ng-switch="w.widgetType">
+                    <div ng-switch-when="HEADER">
+                        <ng-include src="'views/widget/widget-HEADING.view.client.html'">
+                    </div>
+
+                    <div ng-switch-when="IMAGE">
+                        <ng-include src="'views/widget/widget-IMAGE.view.client.html'">
+                    </div>
+
+                    <div ng-switch-when="YOUTUBE" class="youtube-widget">
+                        <ng-include src="'views/widget/widget-YOUTUBE.view.client.html'">
+                    </div>
+
+                    <div ng-switch-when="HTML">
+                        <ng-include src="'views/widget/widget-HTML.view.client.html'">
+                    </div>
+
+                    <div ng-switch-when="TEXT">
+                        <ng-include src="'views/widget/widget-TEXT.view.client.html'">
+                    </div>
+
+                    <div ng-switch-default="">
+                        <ng-include src="'views/widget/widget-DEFAULT.view.client.html'">
+                    </div>
+
+                </div>
+                <div class="control">
+                    <p class="navbar-text pull-right pull-left-margin-1em"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget" class="navbar-link"><i class="fa fa-bars"></i></a></p>
+                    <p class="navbar-text pull-right"><a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{w._id}}" class="navbar-link"><i class="fa fa-cog"></i></a></p>
+                </div>
+
+                <br/>
+                <br/>
+                <br/>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+    <nav class="navbar navbar-default navbar-fixed-bottom container-fluid">
+
+        <div class="navbar-text pull-left row">
+            <div class="text-center col-md-12">
+                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget">
+                    <span class="fa fa-play fa-2x"></span>
+                </a>
+                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget">
+                    <span class="fa fa-eye pull-left-margin-1em fa-2x"></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="navbar-text pull-right row">
+            <div class="text-center col-md-12">
+                <a href="#/user/{{model.userId}}">
+                    <span class="fa fa-user fa-2x"></span>
+                </a>
+            </div>
+        </div>
+    </nav>

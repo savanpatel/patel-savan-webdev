@@ -1,0 +1,5 @@
+<div ng-if="w.formatted" text-angular ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
+        ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
+        ['indent','outdent'],['html']]"></div>
+<input ng-if="!w.formatted && (!w.rows || w.rows===1)" placeholder="{{w.placeholder}}" class="form-control"/>
+<textarea ng-if="!w.formatted && (w.rows > 1)" rows="{{w.rows}}" placeholder="{{w.placeholder}}" class="form-control">{{w.text}}</textarea>

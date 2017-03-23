@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, mongooseAPI) {
 
     var multer = require('multer'); // npm install multer --save
     var upload = multer({ dest: __dirname+'/../public/uploads' });
@@ -13,25 +13,10 @@ module.exports = function (app) {
     app.put("/api/page/:pageId/widget", reorderWidget);
     app.post("/api/upload", upload.single('myFile'), uploadImage);
 
-    /*-----------------------------------------------------------------------*/
-    var widgets = [
-        { "_id": "123", "widgetType": "HEADER", "pageId": "321", "size": 2, "text": "GIZMODO", "name":"Heading1"},
-        { "_id": "234", "widgetType": "HEADER", "pageId": "321", "size": 4, "text": "Lorem ipsum" , "name":"Heading11"},
-        { "_id": "345", "widgetType": "IMAGE", "name":"name text","text":"image text",  "pageId": "321", "width": "100%", "url": "http://lorempixel.com/400/200/"},
-        { "_id": "456", "widgetType": "HTML", "pageId": "321", "text": "<p>Lorem ipsum</p>"},
-        { "_id": "567", "widgetType": "HEADER", "pageId": "321", "size": 4, "text": "Lorem ipsum", "name":"Heading2"},
-        { "_id": "678", "widgetType": "YOUTUBE", "pageId": "321", "width": "100%", "url": "https://youtu.be/AM2Ivdi9c4E" },
-        { "_id": "789", "widgetType": "HTML", "pageId": "321", "text": "<p>Lorem ipsum</p>"},
-        { "_id": "1234", "widgetType": "HEADER", "pageId": "322", "size": 2, "text": "GIZMODO", "name":"Heading13e"},
-        { "_id": "2344", "widgetType": "HEADER", "pageId": "322", "size": 4, "text": "Heade of size 4" , "name":"Heading54"},
-        { "_id": "3453", "widgetType": "IMAGE", "name":"name text", "text":"image text", "pageId": "322", "width": "100%", "url": "http://lorempixel.com/400/200/"},
-        { "_id": "4564", "widgetType": "HTML", "pageId": "322", "text": "<p>Some html</p>"},
-        { "_id": "5673", "widgetType": "HEADER", "pageId": "322", "size": 4, "text": "Another header of size 4", "name":"Heading675"},
-        { "_id": "6785", "widgetType": "YOUTUBE", "pageId": "322", "width": "100%", "url": "https://youtu.be/AM2Ivdi9c4E" },
-        { "_id": "7895", "widgetType": "HTML", "pageId": "322", "text": "<p>Lorem ipsum</p>"}
-    ];
 
-    /*-----------------------------------------------------------------------*/
+    var pageModel = mongooseAPI.pageModelAPI;
+    var widgetModel = mongooseAPI.widgetModelAPI;
+
 
     function createWidget(req, res) {
 
@@ -41,8 +26,7 @@ module.exports = function (app) {
             res.send(500);
         }
         else{
-            var newWidget = createWidgetHelper(pageId, widget);
-            res.send(newWidget);
+            createWidgetHelper(pageId, widget, res);
         }
 
     }
@@ -56,8 +40,13 @@ module.exports = function (app) {
 
             res.send(500);
         }else{
-            var pageList = findAllWidgetsForPageHelper(pageId);
-            res.send(pageList);
+
+            widgetModel.findAllWidgetsForPage(pageId)
+                .then(function (widgets) {
+                    res.send(widgets);
+                }, function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
     }
 
@@ -70,12 +59,12 @@ module.exports = function (app) {
             res.send(500);
         }
         else{
-            var widget = findWidgetByIdHelper(widgetId);
-            if(null == widget){
-                res.send(404);
-            }else{
-                res.send(widget);
-            }
+            widgetModel.findWidgetById(widgetId)
+                .then(function (widget) {
+                    res.send(widget);
+                },function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
     }
 
@@ -90,8 +79,13 @@ module.exports = function (app) {
             res.send(500);
         }
         else{
-            var updatedWidget = updateWidgetHelper(widgetId, widget);
-            res.send(updatedWidget);
+
+            widgetModel.updateWidget(widgetId, widget)
+                .then(function (resp) {
+                    res.send(widget);
+                }, function (err) {
+                    res.sendStatus(500).send(err);
+                });
         }
 
     }
@@ -108,12 +102,12 @@ module.exports = function (app) {
         }
         else{
 
-            if(deleteWidgetHelper(widgetId)){
-                res.send(200);
-            }
-            else{
-                res.send(404);
-            }
+            widgetModel.deleteWidget(widgetId)
+                .then(function (status) {
+                    res.sendStatus(status);
+                }, function (err) {
+                    res.sendStatus(err).send(err);
+                });
         }
     }
 
@@ -129,9 +123,48 @@ module.exports = function (app) {
 
         var pageId = req.params.pageId;
 
-        var widgetList = findAllWidgetsForPageHelper(pageId);
+      //  var widgetList = findAllWidgetsForPageHelper(pageId);
 
-        widgets = widgets.filter( function( w ) {
+        var widgetList = [];
+
+        widgetModel.findAllWidgetsForPage(pageId)
+            .then(function (widgets) {
+                var widgetList = widgets;
+                var widgetListIds = [];
+
+                for(var w in widgetList){
+
+                    widgetListIds.push(widgetList[w]._id);
+
+                }
+
+                widgetModel.deleteMultiWidgets(widgetListIds)
+                    .then(function (status) {
+
+                        var tempWidget = JSON.parse(JSON.stringify(widgetList[widgetIndexInfo.initial]));
+                        widgetList.splice(widgetIndexInfo.initial, 1);
+
+                        widgetList.splice(widgetIndexInfo.final, 0, tempWidget);
+
+                        widgetModel.insertMulti(widgetList)
+                            .then(function (status) {
+                                res.sendStatus(200);
+
+                            }, function (err) {
+                                res.sendStatus(200).send(err);
+                            });
+
+                    }, function (err) {
+                        res.sendStatus(500).send(err);
+                    });
+
+            }, function (err) {
+                // do nothing.
+            });
+
+
+
+        /*widgets = widgets.filter( function( w ) {
             return widgetList.indexOf( w ) < 0;
         } );
 
@@ -143,7 +176,7 @@ module.exports = function (app) {
 
         for(var w in widgetList){
             widgets.push(widgetList[w]);
-        }
+        }*/
         res.send(200);
     }
     
@@ -162,21 +195,29 @@ module.exports = function (app) {
         var size          = myFile.size;
         var mimetype      = myFile.mimetype;
 
-        var widget = findWidgetByIdHelper(widgetId);
-        widget.url = "localhost:3000/uploads/" + filename;
-        widget.isUploaded = true;
-        res.redirect("/assignment/assignment4/#/user/" + req.body.userId + "/website/" + req.body.websiteId + "/page/" + req.body.pageId + "/widget");
 
+        widgetModel.findWidgetById(widgetId)
+            .then(function (widget) {
 
+                widget.url = "localhost:3000/uploads/" + filename;
+                widget.isUploaded = true;
+
+                widgetModel.updateWidget(widget._id, widget)
+                    .then(function (resp) {
+                        res.redirect("/assignment4/#/user/" + req.body.userId + "/website/" + req.body.websiteId + "/page/" + req.body.pageId + "/widget");
+                    }, function (err) {
+                        res.redirect("/assignment4/#/user/" + req.body.userId + "/website/" + req.body.websiteId + "/page/" + req.body.pageId + "/widget");
+                    });
+            }, function (err) {
+                res.redirect("/assignment4/#/user/" + req.body.userId + "/website/" + req.body.websiteId + "/page/" + req.body.pageId + "/widget");
+            });
 
     }
     /*-----------------------------------------------------------------------*/
 
-    function createWidgetHelper(pageId, widget)
+    function createWidgetHelper(pageId, widget, res)
     {
-        var newWidget = {_id:widgets.length + 1,
-            widgetType:widget.widgetType,
-            pageId: pageId};
+        var newWidget = widget;
 
         switch (widget.widgetType) {
 
@@ -203,86 +244,57 @@ module.exports = function (app) {
                 break;
         }
 
-        widgets.push(newWidget);
+        newWidget.pageId = pageId;
 
-        return newWidget;
+        widgetModel.createWidget(pageId, newWidget)
+            .then(function (widget) {
+                updatePageForNewWidget(pageId, widget, res);
+            }, function (err) {
+                res.sendStatus(500).send(widget);
+            });
     }
 
 
 
+    function updatePageForNewWidget(pageId, widget, res) {
 
+        pageModel.findPageById(pageId)
+            .then(function (dbPage) {
+                 dbPage.widgets.push(widget._id);
+
+                pageModel.updatePage(pageId, dbPage)
+                    .then(function (resp) {
+                        res.send(widget);
+                    }, function (err) {
+                        res.sendStatus(500).send(err);
+                    });
+            }, function (err) {
+                res.sendStatus(500).send(err);
+            });
+    }
+
+
+
+    /**//****/
     function findAllWidgetsForPageHelper(pageId) {
 
         var widgetList = [];
 
-        for(var w in widgets) {
+        widgetModel.findAllWidgetsForPage(pageId)
+            .then(function (widgets) {
+                widgetList = widgets;
+            }, function (err) {
+               // do nothing.
+            });
+
+
+
+        /*for(var w in widgets) {
             if(widgets[w].pageId == pageId) {
                 widgetList.push(widgets[w]);
             }
-        }
+        }*/
         return widgetList;
     }
 
-
-
-    function findWidgetByIdHelper(widgetId) {
-
-        for(var w in widgets) {
-
-            if(widgets[w]._id == widgetId) {
-                return widgets[w];
-            }
-        }
-        return null;
-    }
-
-
-
-    function updateWidgetHelper(widgetId, widget) {
-
-        for(var w in widgets) {
-
-            if(widgets[w]._id == widgetId) {
-
-                switch (widget.widgetType) {
-
-                    case "HEADER": widgets[w].name = widget.name;
-                        widgets[w].size = widget.size;
-                        widgets[w].text = widget.text;
-                        break;
-
-                    case "IMAGE": widgets[w].width = widget.width;
-                        widgets[w].url = widget.url;
-                        break;
-
-                    case "HTML": widgets[w].text = widget.text;
-                        break;
-
-                    case "YOUTUBE": widgets[w].width = widget.width;
-                        widgets[w].url = widget.url;
-                        break;
-                    default:
-                        break;
-                }
-                return widgets[w];
-            }
-        }
-
-        return null;
-    }
-
-
-
-    function deleteWidgetHelper(widgetId) {
-        for(var w in widgets) {
-
-            if(widgets[w]._id == widgetId) {
-                widgets.splice(w, 1);
-                return true;
-            }
-
-        }
-
-        return false;
-    }
 }

@@ -1,0 +1,21 @@
+<form>
+
+
+
+    <div class="form-group">
+
+        <div ng-model="model.w.text"
+             text-angular
+             ta-toolbar="[['h1','h2','h3'],['bold','italics','underline','strikeThrough'],
+        ['ul','ol'],['justifyLeft','justifyCenter','justifyRight','justifyFull'],
+        ['indent','outdent'],['html']]">
+        </div>
+        <label for="headingtext">Text</label>
+        <input type="text" ng-model="model.w.text" class="form-control" id="headingtext" value="">
+    </div>
+
+    <div class="form-group">
+        <a class="btn btn-danger btn-block"
+           ng-click="model.deleteWidget()">Delete</a>
+    </div>
+</form>

@@ -1,0 +1,60 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="col-md-4 small hidden-sm hidden-xs">
+            <div class="navbar-header btn-block">
+                <p class="navbar-text pull-left pull-left-margin-1em"><a href="#/user/{{model.userId}}/website" class="navbar-link"><i class="fa fa-chevron-left"></i></a></p>
+                <a class="navbar-brand" href="#/user/1234/website">Websites</a>
+                <p class="navbar-text pull-right"><a href="#/user/{{model.userId}}/website/new" class="navbar-link"><i class="fa fa-plus"></i></a></p>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="navbar-header btn-block">
+                <a class="navbar-brand" href="#/user/{{model.userId}}/website/{{model.websiteId}}">Edit Website</a>
+                <p class="navbar-text pull-right"><a ng-click="model.updateWebsite(model.website)" class="navbar-link"><i class="fa fa-check"></i></a></p>
+            </div>
+        </div>
+
+
+    </div>
+</nav>
+
+<div class="container-fluid container-if-fixed-header">
+
+
+    <div class="row website-list-group-item">
+        <div class="col-md-4 small hidden-xs">
+
+            <div class="col-md-12 list-group-item container" ng-repeat="w in model.websitelist">
+                <p class="pull-left"><strong>{{w.name}}</strong></p>
+                <a href="#/user/{{model.userId}}/website/{{w._id}}" > <i class="fa fa-cog pull-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="new-website-name">Name</label>
+                <input type="text" ng-model="model.website.name" class="form-control" id="new-website-name" value="Blog App">
+            </div>
+            <br/>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" ng-model="model.website.description" id="description" rows="8">Blogging about self help and time management.</textarea>
+            </div>
+            <div class="form-group">
+                <a ng-click="model.deleteWebsite()" class="btn btn-danger btn-block">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-bottom container-fluid">
+        <div class="navbar-text pull-right row">
+            <div class="text-center col-md-12">
+                <a href="#/user/{{model.userId}}">
+                    <span class="fa fa-user fa-2x"></span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+</div>

@@ -125,7 +125,6 @@ module.exports = function (app, mongooseAPI) {
             return;
         }
 
-        console.log("Deleting user  " + userId)
         userModel.deleteUser(userId)
             .then(function (status) {
                 res.sendStatus(status);

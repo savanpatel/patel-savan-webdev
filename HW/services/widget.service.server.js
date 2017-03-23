@@ -184,8 +184,6 @@ module.exports = function (app, mongooseAPI) {
     
     function uploadImage(req, res) {
 
-        console.log("In file upload");
-        console.log(req.body);
         var widgetId      = req.body.widgetId;
         var width         = req.body.width;
         var myFile        = req.file;
